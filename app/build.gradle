@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
+    id 'kotlin-android-extensions'
 }
 
 android {
@@ -8,7 +9,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.example.greenpass"
+        applicationId "com.example.com.example.greenpass"
         minSdkVersion 29
         targetSdkVersion 30
         versionCode 1

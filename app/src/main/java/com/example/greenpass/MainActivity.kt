@@ -36,10 +36,12 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow
+                R.id.nav_userinfo, R.id.nav_geoffence, R.id.nav_covidinfo
             ), drawerLayout
         )
+        //make the app bar change with navController
         setupActionBarWithNavController(navController, appBarConfiguration)
+        //make so the display thing changes with navController
         navView.setupWithNavController(navController)
     }
 
