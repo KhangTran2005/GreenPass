@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "615688692898",
+    "project_id": "green-pass-c430e",
+    "storage_bucket": "green-pass-c430e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:615688692898:android:87979b94f0f9dbb9f623fb",
+        "android_client_info": {
+          "package_name": "com.example.greenpass"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "615688692898-ee6jn2pacmhhtb03cc6sbi7jjuquuqgv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgGGd80bTENbMG6wAYkeg-eBFZPNPaRC8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "615688692898-ee6jn2pacmhhtb03cc6sbi7jjuquuqgv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
