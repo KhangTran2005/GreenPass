@@ -4,23 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.greenpass.R
-import com.example.greenpass.data.api.ApiHelper
-import com.example.greenpass.data.api.ServiceBuilder
-import com.example.greenpass.data.model.Country
-import com.example.greenpass.ui.base.ViewModelFactory
-import com.example.greenpass.ui.covidinfo.adapter.ExploreAdapter
 import com.example.greenpass.ui.covidinfo.adapter.PagerAdapter
-import com.example.greenpass.utils.Status
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_covidinfo.*
-import kotlinx.android.synthetic.main.fragment_explore.*
 
 class CovidInfoFragment : Fragment() {
 

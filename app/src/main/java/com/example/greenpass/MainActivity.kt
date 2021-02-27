@@ -13,8 +13,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import kotlinx.android.synthetic.main.app_bar_main.*
-import org.mindrot.jbcrypt.BCrypt
 
 class MainActivity : AppCompatActivity() {
 
