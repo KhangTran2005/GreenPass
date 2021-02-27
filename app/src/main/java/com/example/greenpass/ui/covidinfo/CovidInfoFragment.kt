@@ -11,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.example.greenpass.R
+import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.fragment_covidinfo.*
 
 class CovidInfoFragment : Fragment() {
@@ -30,35 +31,24 @@ class CovidInfoFragment : Fragment() {
     }
 
     private fun configureLayout(){
-        val adapter = PagerAdapter(childFragmentManager, bottom_navigation.menu.size())
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.explore))
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.ic_baseline_colorize_24))
+        tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.news))
+
+        val adapter = PagerAdapter(childFragmentManager, tab_layout.tabCount)
         pager.adapter = adapter
-        bottom_navigation.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.explore -> pager.currentItem = 0
-                R.id.vaccine -> pager.currentItem = 1
-                R.id.news -> pager.currentItem = 2
-            }
-            true
-        }
-
-        pager.addOnPageChangeListener(object: ViewPager.OnPageChangeListener{
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-            override fun onPageSelected(position: Int) {
-                when (position){
-                    0 -> {
-                        bottom_navigation.menu.findItem(R.id.explore).isChecked = true
-                    }
-                    1 -> {
-                        bottom_navigation.menu.findItem(R.id.vaccine).isChecked = true
-                    }
-                    2 -> {
-                        bottom_navigation.menu.findItem(R.id.news).isChecked = true
-                    }
-                }
+        pager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tab_layout))
+        tab_layout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener{
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                pager.currentItem = tab!!.position
             }
 
-            override fun onPageScrollStateChanged(state: Int) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+            }
+
         })
     }
 }
