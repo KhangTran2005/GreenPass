@@ -13,7 +13,11 @@
     <string name="menu_slideshow">Slideshow</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="explore">Explore</string>
     <string name="vaccines">Vaccines</string>
+    <string name="title_activity_covid_info_tab">CovidInfoTabActivity</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="explore">Explore</string>
+    <string name="vaccine">Vaccine</string>
     <string name="news">News</string>
 </resources>
