@@ -5,7 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.greenpass.R
+import com.example.greenpass.data.api.ApiHelper
+import com.example.greenpass.data.api.ServiceBuilder
+import com.example.greenpass.data.model.Country
+import com.example.greenpass.ui.base.ViewModelFactory
+import com.example.greenpass.ui.covidinfo.CovidInfoViewModel
+import com.example.greenpass.ui.covidinfo.adapter.ExploreAdapter
+import com.example.greenpass.utils.Status
+import kotlinx.android.synthetic.main.fragment_explore.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -17,8 +29,12 @@ private const val ARG_PARAM2 = "param2"
  * Use the [ExploreFrag.newInstance] factory method to
  * create an instance of this fragment.
  */
+@Suppress("DEPRECATION")
 class ExploreFrag : Fragment() {
-    // TODO: Rename and change types of parameters
+
+    private lateinit var viewModel: CovidInfoViewModel
+    private lateinit var adapter: ExploreAdapter
+
     private var param1: String? = null
     private var param2: String? = null
 
@@ -36,6 +52,56 @@ class ExploreFrag : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_explore, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupStuff()
+    }
+
+    private fun setupStuff() {
+        //Set up ViewModel
+        viewModel = ViewModelProviders.of(
+            this,
+            ViewModelFactory(ApiHelper(ServiceBuilder.apiService))
+        ).get(CovidInfoViewModel::class.java)
+
+        //setupUI
+        adapter = ExploreAdapter(arrayListOf())
+        country_recycler.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@ExploreFrag.adapter
+        }
+
+        //setup observers
+        viewModel.getCountries().observe(viewLifecycleOwner, {
+            it?.let { resource ->
+                when (resource.status) {
+                    Status.SUCCESS -> {
+                        country_recycler.visibility = View.VISIBLE
+                        progress.visibility = View.GONE
+                        resource.data?.let { countries -> retrieveList(countries) }
+                    }
+                    Status.ERROR -> {
+                        country_recycler.visibility = View.VISIBLE
+                        progress.visibility = View.GONE
+                        Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+                    }
+                    Status.LOADING -> {
+                        progress.visibility = View.VISIBLE
+                        country_recycler.visibility = View.GONE
+                    }
+                }
+            }
+        })
+    }
+
+    private fun retrieveList(countries: List<Country>){
+        adapter.apply {
+            addCountries(countries)
+            notifyDataSetChanged()
+        }
     }
 
     companion object {

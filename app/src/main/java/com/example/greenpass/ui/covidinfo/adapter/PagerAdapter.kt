@@ -1,4 +1,4 @@
-package com.example.greenpass.ui.covidinfo
+package com.example.greenpass.ui.covidinfo.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
