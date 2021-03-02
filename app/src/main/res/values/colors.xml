@@ -9,6 +9,9 @@
     <color name="latte_200">#ffffb0</color>
     <color name="latte_500">#ffcc80</color>
     <color name="latte_700">#ca9b52</color>
+    <color name="cobalt_200">#88ffff</color>
+    <color name="cobalt_500">#4dd0e1</color>
+    <color name="cobalt_700">#009faf</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>

@@ -3,8 +3,8 @@
     android:duration="@android:integer/config_longAnimTime">
 
     <translate
-        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-        android:fromYDelta="-75%p"
+        android:interpolator="@android:anim/decelerate_interpolator"
+        android:fromYDelta="-10%p"
         android:toYDelta="0"
         android:duration="1500"
         />
@@ -12,8 +12,8 @@
     <alpha
         android:fromAlpha="0"
         android:toAlpha="1"
-        android:duration="1750"
-        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:duration="2000"
+        android:interpolator="@android:anim/decelerate_interpolator"
         />
 
 </set>

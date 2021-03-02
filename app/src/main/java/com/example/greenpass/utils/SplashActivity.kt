@@ -20,7 +20,7 @@ class SplashActivity : AppCompatActivity() {
         setContentView(R.layout.activity_splash)
 
         greenpass_img.animation = AnimationUtils.loadAnimation(this, R.anim.from_top_splash)
-        greenpass_label.animation = AnimationUtils.loadAnimation(this, R.anim.item_slide_from_bottom)
+        greenpass_label.animation = AnimationUtils.loadAnimation(this, R.anim.from_bottom_splash)
 
         GlobalScope.launch {
             delay(2000L)
