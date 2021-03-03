@@ -6,26 +6,43 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.greenpass.R
+import com.example.greenpass.ui.base.InfoDialog
+import kotlinx.android.synthetic.main.fragment_userinfo.*
 
-class UserInfoFragment : Fragment() {
+class UserInfoFragment : Fragment(){
 
-    private lateinit var galleryViewModel: UserInfoViewModel
+    private lateinit var userInfoViewModel: UserInfoViewModel
+    private lateinit var user_name: TextView
+    private lateinit var user_clearance: TextView
+    private lateinit var user_vacc_date: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        galleryViewModel =
-            ViewModelProvider(this).get(UserInfoViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_userinfo, container, false)
-        val textView: TextView = root.findViewById(R.id.text_gallery)
-        galleryViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        //Initializing field text views
+        user_name = name.getChildAt(0) as TextView
+        user_clearance = clearance.getChildAt(0) as TextView
+        user_vacc_date  = vacc_date.getChildAt(0) as TextView
+
+        //set up on click listeners for descriptions on cards
+        name.setOnClickListener{
+            InfoDialog("Insert Name", "Have content like age and stuff").show(childFragmentManager, InfoDialog.TAG)
+        }
+        clearance.setOnClickListener{
+            InfoDialog("Insert Clearance Level", "Have the descriptions of perms allowed by the clearance level in question").show(childFragmentManager, InfoDialog.TAG)
+        }
+        vacc_date.setOnClickListener{
+            InfoDialog("Vaccination Date", "Maybe have extra content like when the vaccination took place").show(childFragmentManager, InfoDialog.TAG)
+        }
+
     }
 }

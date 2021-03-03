@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GreenPass">
-        <activity android:name=".utils.SplashActivity"
+        <activity android:name=".ui.base.SplashActivity"
             android:theme="@style/Theme.GreenPass.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

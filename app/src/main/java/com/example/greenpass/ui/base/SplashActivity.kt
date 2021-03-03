@@ -1,4 +1,4 @@
-package com.example.greenpass.utils
+package com.example.greenpass.ui.base
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

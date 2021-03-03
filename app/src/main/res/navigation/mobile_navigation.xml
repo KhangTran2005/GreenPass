@@ -14,7 +14,7 @@
     <fragment
         android:id="@+id/nav_userinfo"
         android:name="com.example.greenpass.ui.userinfo.UserInfoFragment"
-        android:label="User Info"
+        android:label="Green Pass"
         tools:layout="@layout/fragment_userinfo" />
 
     <fragment
@@ -22,4 +22,9 @@
         android:name="com.example.greenpass.ui.covidinfo.CovidInfoFragment"
         android:label="Covid Info"
         tools:layout="@layout/fragment_covidinfo" />
+    <fragment
+        android:id="@+id/nav_login"
+        android:name="com.example.greenpass.ui.main.LogIn"
+        android:label="fragment_log_in"
+        tools:layout="@layout/fragment_log_in" />
 </navigation>

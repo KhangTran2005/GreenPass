@@ -7,7 +7,7 @@
         <item
             android:id="@+id/nav_userinfo"
             android:icon="@drawable/ic_baseline_person_24"
-            android:title="User Info" />
+            android:title="Green Pass" />
         <item
             android:id="@+id/nav_geoffence"
             android:icon="@drawable/ic_baseline_map_24"
