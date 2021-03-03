@@ -25,6 +25,14 @@
     <fragment
         android:id="@+id/nav_login"
         android:name="com.example.greenpass.ui.main.LogIn"
-        android:label="fragment_log_in"
-        tools:layout="@layout/fragment_log_in" />
+        android:label="Log In"
+        tools:layout="@layout/fragment_log_in" >
+        <action
+            android:id="@+id/login_accepted"
+            app:destination="@id/nav_userinfo"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_in_left"
+            app:popExitAnim="@android:anim/slide_out_right" />
+    </fragment>
 </navigation>

@@ -41,7 +41,7 @@ class UserInfoFragment : Fragment(){
             InfoDialog("Insert Clearance Level", "Have the descriptions of perms allowed by the clearance level in question").show(childFragmentManager, InfoDialog.TAG)
         }
         vacc_date.setOnClickListener{
-            InfoDialog("Vaccination Date", "Maybe have extra content like when the vaccination took place").show(childFragmentManager, InfoDialog.TAG)
+            InfoDialog("Vaccination Date", "Maybe have extra content like where the vaccination took place").show(childFragmentManager, InfoDialog.TAG)
         }
 
     }

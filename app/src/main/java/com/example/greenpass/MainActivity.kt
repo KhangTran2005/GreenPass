@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.greenpass.ui.base.InfoDialog
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 
 class MainActivity : AppCompatActivity(), InfoDialog.OnDialogDismissListener {
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity(), InfoDialog.OnDialogDismissListener {
         //send to log in screen
         if (!isLoggedIn){
             navController.navigate(R.id.nav_login)
+            drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
     }
 
