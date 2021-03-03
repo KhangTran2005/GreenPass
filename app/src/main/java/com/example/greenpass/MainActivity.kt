@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), InfoDialog.OnDialogDismissListener {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_userinfo, R.id.nav_geoffence, R.id.nav_covidinfo
+                R.id.nav_userinfo, R.id.nav_geofence, R.id.nav_covidinfo
             ), drawerLayout
         )
         //make the app bar change with navController

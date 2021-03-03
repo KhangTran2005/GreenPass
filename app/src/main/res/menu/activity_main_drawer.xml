@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_baseline_person_24"
             android:title="Green Pass" />
         <item
-            android:id="@+id/nav_geoffence"
+            android:id="@+id/nav_geofence"
             android:icon="@drawable/ic_baseline_map_24"
-            android:title="Geoffence" />
+            android:title="Geofence" />
         <item
             android:id="@+id/nav_covidinfo"
             android:icon="@drawable/ic_baseline_info_24"

@@ -6,10 +6,10 @@
     app:startDestination="@+id/nav_userinfo">
 
     <fragment
-        android:id="@+id/nav_geoffence"
-        android:name="com.example.greenpass.ui.geoffence.GeoffenceFragment"
-        android:label="Geoffence"
-        tools:layout="@layout/fragment_geoffence" />
+        android:id="@+id/nav_geofence"
+        android:name="com.example.greenpass.ui.geoffence.GeofenceFragment"
+        android:label="Geofence"
+        tools:layout="@layout/fragment_geofence" />
 
     <fragment
         android:id="@+id/nav_userinfo"
