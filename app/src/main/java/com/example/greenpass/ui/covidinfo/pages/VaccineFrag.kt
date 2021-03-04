@@ -10,18 +10,12 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.greenpass.R
-import com.example.greenpass.data.api.ApiHelper
 import com.example.greenpass.data.api.ServiceBuilder
-import com.example.greenpass.data.model.Country
 import com.example.greenpass.data.model.Vaccine
-import com.example.greenpass.ui.base.ViewModelFactory
 import com.example.greenpass.ui.covidinfo.CovidInfoViewModel
-import com.example.greenpass.ui.covidinfo.adapter.ExploreAdapter
 import com.example.greenpass.ui.covidinfo.adapter.VaccineAdapter
 import com.example.greenpass.utils.Status
 import kotlinx.android.synthetic.main.fragment_explore.*
-import kotlinx.android.synthetic.main.fragment_explore.country_recycler
-import kotlinx.android.synthetic.main.fragment_explore.progress
 import kotlinx.android.synthetic.main.fragment_vaccine.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -61,46 +55,45 @@ class VaccineFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupStuff()
     }
 
-    private fun setupStuff() {
-        //Set up ViewModel
-        viewModel = ViewModelProviders.of(
-                this,
-                ViewModelFactory(ApiHelper(ServiceBuilder.apiService))
-        ).get(CovidInfoViewModel::class.java)
-
-        //setupUI
-        adapter = VaccineAdapter(Vaccine(arrayListOf(), listOf(), "", ""))
-        vaccine_recycler.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = this@VaccineFrag.adapter
-        }
-
-        //setup observers
-        viewModel.getVaccines().observe(viewLifecycleOwner, {
-            it?.let { resource ->
-                when (resource.status) {
-                    Status.SUCCESS -> {
-                        vaccine_recycler.visibility = View.VISIBLE
-                        vaccine_progress.visibility = View.GONE
-                        resource.data?.let { vaccine -> retrieveList(vaccine) }
-                    }
-                    Status.ERROR -> {
-                        vaccine_recycler.visibility = View.VISIBLE
-                        vaccine_progress.visibility = View.GONE
-                        it.message?.let { it1 -> Log.d("debug", it1) }
-                        Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
-                    }
-                    Status.LOADING -> {
-                        vaccine_progress.visibility = View.VISIBLE
-                        vaccine_recycler.visibility = View.GONE
-                    }
-                }
-            }
-        })
-    }
+//    private fun setupStuff() {
+//        //Set up ViewModel
+//        viewModel = ViewModelProviders.of(
+//                this,
+//                ViewModelFactory(ApiHelper(ServiceBuilder.apiService))
+//        ).get(CovidInfoViewModel::class.java)
+//
+//        //setupUI
+//        adapter = VaccineAdapter(Vaccine(arrayListOf(), listOf(), "", ""))
+//        vaccine_recycler.apply {
+//            layoutManager = LinearLayoutManager(context)
+//            adapter = this@VaccineFrag.adapter
+//        }
+//
+//        //setup observers
+//        viewModel.getVaccines().observe(viewLifecycleOwner, {
+//            it?.let { resource ->
+//                when (resource.status) {
+//                    Status.SUCCESS -> {
+//                        vaccine_recycler.visibility = View.VISIBLE
+//                        vaccine_progress.visibility = View.GONE
+//                        resource.data?.let { vaccine -> retrieveList(vaccine) }
+//                    }
+//                    Status.ERROR -> {
+//                        vaccine_recycler.visibility = View.VISIBLE
+//                        vaccine_progress.visibility = View.GONE
+//                        it.message?.let { it1 -> Log.d("debug", it1) }
+//                        Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+//                    }
+//                    Status.LOADING -> {
+//                        vaccine_progress.visibility = View.VISIBLE
+//                        vaccine_recycler.visibility = View.GONE
+//                    }
+//                }
+//            }
+//        })
+//    }
 
     private fun retrieveList(vaccine: Vaccine){
         adapter.apply {
