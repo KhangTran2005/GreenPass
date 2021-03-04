@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_userinfo">
+    app:startDestination="@+id/nav_login">
 
     <fragment
         android:id="@+id/nav_geofence"
@@ -30,6 +30,9 @@
         <action
             android:id="@+id/login_accepted"
             app:destination="@id/nav_userinfo"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/mobile_navigation"
+            app:popUpToInclusive="true"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
