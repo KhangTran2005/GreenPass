@@ -7,8 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.covidinfo.pages.ExploreFrag">
 
+    <TextView
+        android:id="@+id/country_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?attr/textAppearanceSubtitle1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        />
+
     <ProgressBar
-        android:id="@+id/progress"
+        android:id="@+id/country_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminateBehavior="cycle"

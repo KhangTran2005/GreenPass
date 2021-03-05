@@ -27,18 +27,10 @@ data class Country(
     val todayDeaths: Int,
     val todayRecovered: Int,
     val updated: Long
-) : Comparable<Any> {
+) {
     @Serializable
     data class CountryInfo(
-        val _id: Int,
+        val _id: Int?,
         val flag: String,
-        val iso2: String,
-        val iso3: String,
-        val lat: Double,
-        val long: Double
     )
-
-    override fun compareTo(other: Any): Int {
-        return this.country.compareTo((other as Country).country)
-    }
 }

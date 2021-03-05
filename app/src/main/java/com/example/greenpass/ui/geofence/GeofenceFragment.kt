@@ -1,4 +1,4 @@
-package com.example.greenpass.ui.geoffence
+package com.example.greenpass.ui.geofence
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -17,7 +17,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.greenpass.R
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.LocationServices
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,7 +25,6 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
-import com.google.android.gms.maps.model.MarkerOptions
 
 class GeofenceFragment : Fragment() {
     private var locationPermissionGranted = false
