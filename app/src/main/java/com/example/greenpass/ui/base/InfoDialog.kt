@@ -16,21 +16,6 @@ class InfoDialog(
         var title: String,
         var content: String
 ) : DialogFragment() {
-    private var mCallback: OnDialogDismissListener? = null
-
-    interface OnDialogDismissListener{
-        fun onDialogDismissListener()
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try{
-            mCallback = activity as OnDialogDismissListener
-        }
-        catch(e: ClassCastException){
-            throw java.lang.ClassCastException(activity.toString() + "must implement OnDialogDismissListener")
-        }
-    }
 
     override fun onCreateView(
             inflater: LayoutInflater,

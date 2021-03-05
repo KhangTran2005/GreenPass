@@ -34,8 +34,6 @@ class ExploreFrag : Fragment() {
 
         adapter = ExploreAdapter(arrayListOf())
 
-        country_progress.visibility = View.GONE
-
         country_recycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@ExploreFrag.adapter
@@ -43,6 +41,7 @@ class ExploreFrag : Fragment() {
 
         viewModel.response.observe(viewLifecycleOwner, {
             updateData(it)
+            country_progress.visibility = View.GONE
         })
 
 //        viewModel.reponseFake.observe(viewLifecycleOwner, {

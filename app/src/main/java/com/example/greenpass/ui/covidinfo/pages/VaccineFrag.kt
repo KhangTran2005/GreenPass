@@ -34,8 +34,6 @@ class VaccineFrag : Fragment() {
 
         adapter = VaccineAdapter(Vaccine(listOf(), listOf(), "", ""))
 
-        vaccine_progress.visibility = View.GONE
-
         vaccine_recycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@VaccineFrag.adapter
@@ -43,6 +41,7 @@ class VaccineFrag : Fragment() {
 
         viewModel.response.observe(viewLifecycleOwner, {
             updateData(it)
+            vaccine_progress.visibility = View.GONE
         })
     }
 
