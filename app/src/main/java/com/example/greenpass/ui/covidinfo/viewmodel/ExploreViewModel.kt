@@ -31,7 +31,7 @@ class ExploreViewModel : ViewModel() {
                 _response.value = countries
             }
             catch(e: Exception){
-                _responseFake.value = "The thing fucking broke down: ${e.message}"
+                _responseFake.value = "The thing broke down: ${e.message}"
             }
         }
     }

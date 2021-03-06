@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.example.greenpass.data.Database
 import com.example.greenpass.ui.base.InfoDialog
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections

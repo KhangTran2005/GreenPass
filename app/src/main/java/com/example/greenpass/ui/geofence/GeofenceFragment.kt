@@ -3,18 +3,22 @@ package com.example.greenpass.ui.geofence
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.pm.PackageManager
 import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.greenpass.R
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -25,11 +29,18 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Marker
+import com.mancj.slideup.SlideUp
+import com.mancj.slideup.SlideUpBuilder
+import kotlinx.android.synthetic.main.fragment_geofence.*
 
-class GeofenceFragment : Fragment() {
+class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener {
     private var locationPermissionGranted = false
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var lastKnownLocation: Location? = null
+    private val viewModel: GeofenceViewModel by lazy {
+        ViewModelProvider(this).get(GeofenceViewModel::class.java)
+    }
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
@@ -66,6 +77,18 @@ class GeofenceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+
+        val slideUp = SlideUpBuilder(geofence_dialog_box)
+            .withStartState(SlideUp.State.HIDDEN)
+            .withStartGravity(Gravity.BOTTOM)
+            .build()
+        if(viewModel.isDialogOpen.value == true){
+            slideUp.show()
+        }
+        // TODO: Replace with gesture
+        slide_button.setOnClickListener {
+            viewModel.adjustDialog(slideUp)
+        }
     }
 
     private fun getLocationPermission() {
@@ -113,5 +136,10 @@ class GeofenceFragment : Fragment() {
         private val SINGAPORE_BOUNDS = LatLngBounds(
             LatLng(1.103883, 103.455741),
             LatLng(1.787399, 104.373282))
+    }
+
+    override fun onMarkerClick(p0: Marker?): Boolean {
+        Toast.makeText(context as Context,"vreievivn",Toast.LENGTH_SHORT).show()
+        return false
     }
 }
