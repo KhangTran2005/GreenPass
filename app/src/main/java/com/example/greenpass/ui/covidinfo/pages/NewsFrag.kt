@@ -8,12 +8,11 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.greenpass.R
-import com.example.greenpass.data.model.Country
 import com.example.greenpass.data.model.News
-import com.example.greenpass.ui.covidinfo.adapter.ExploreAdapter
 import com.example.greenpass.ui.covidinfo.adapter.NewsAdapter
 import com.example.greenpass.ui.covidinfo.viewmodel.NewsViewModel
 import kotlinx.android.synthetic.main.fragment_explore.*
+import kotlinx.android.synthetic.main.fragment_news.*
 
 class NewsFrag : Fragment() {
 
@@ -33,22 +32,22 @@ class NewsFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = NewsAdapter(News(listOf()))
+        adapter = NewsAdapter(arrayListOf())
 
-        //TODO: change the recycler thing
-
-        country_recycler.apply {
+        news_recycler.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@NewsFrag.adapter
         }
 
-        viewModel.responseVaccine.observe(viewLifecycleOwner, {
+        viewModel.response.observe(viewLifecycleOwner, {
             updateData(it)
-            country_progress.visibility = View.GONE
+            news_progress.visibility = View.GONE
         })
     }
 
-    private fun updateData(news: News){
+    private fun updateData(articles: List<News.Article>){
+        adapter.addArticles(articles)
+        adapter.notifyDataSetChanged()
     }
 
 }

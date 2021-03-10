@@ -1,5 +1,6 @@
 package com.example.greenpass.ui.covidinfo.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,31 +12,30 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class NewsViewModel : ViewModel() {
-    private val _responseVaccine = MutableLiveData<News>()
-    private val _responseHealth = MutableLiveData<News>()
-    private val _responseCorona = MutableLiveData<News>()
 
-    val responseVaccine: LiveData<News>
-        get() = _responseVaccine
-    val responseHealth: LiveData<News>
-        get() = _responseHealth
-    val responseCorona: LiveData<News>
-        get() = _responseCorona
+    private val _response = MutableLiveData<List<News.Article>>()
+
+    val response: LiveData<List<News.Article>>
+        get() = _response
 
     init {
-        fetchCountries()
+        fetchNews()
     }
 
-    private fun fetchCountries() {
+    private fun fetchNews() {
         viewModelScope.launch {
             try{
                 val vaccine = InfoApi.retrofitService.getVaccNews()
                 val health = InfoApi.retrofitService.getHealthNews()
                 val corona = InfoApi.retrofitService.getCovNews()
 
-                _responseVaccine.value = vaccine
-                _responseHealth.value = health
-                _responseCorona.value = corona
+                val vaccineArticles = vaccine.news
+                val healthArticles = health.news
+                val coronaArticles = corona.news
+
+                Log.d("debug", vaccineArticles.toString())
+
+                _response.value = listOf(vaccineArticles, healthArticles, coronaArticles).flatten()
             }
             catch(e: Exception){
 
