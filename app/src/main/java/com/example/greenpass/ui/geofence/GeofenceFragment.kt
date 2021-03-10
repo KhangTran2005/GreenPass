@@ -156,6 +156,8 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
                     } else{
                         ratings.child(lastPOI.placeId).ref.get().addOnSuccessListener {
                             val prevRating = (it.value as Number).toDouble()
+                            Log.i(TAG,"Previous rating: $prevRating")
+                            Log.i(TAG,"Current rating: $rating")
                             ratings.child(lastPOI.placeId).ref.setValue(rating)
 
                             fun updatePlaceRating() {
@@ -177,14 +179,16 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
                                             } else{
                                                 val N: Int = (placeRating.child("N").value as Number).toInt()
                                                 val sum = (placeRating.child("sum").value as Number).toDouble()
-                                                if (prevRating < 0.0 + 1e-9 && rating > 0.0) {
+                                                if (prevRating <= 0.0 + 1e-9 && rating > 0.0) {
+                                                    // Previously unrated to rated
                                                     placeRating.child("N")
                                                             .ref
                                                             .setValue(N + 1)
                                                     placeRating.child("sum")
                                                             .ref
                                                             .setValue(sum + rating)
-                                                } else if (prevRating > 0.0 && rating < 0.0 + 1e-9) {
+                                                } else if (prevRating > 0.0 && rating <= 0.0 + 1e-9) {
+                                                    //Rated to unrated
                                                     placeRating.child("N")
                                                             .ref
                                                             .setValue(N - 1)
