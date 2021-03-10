@@ -1,5 +1,6 @@
 package com.example.greenpass
 
+import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import com.google.android.material.navigation.NavigationView
@@ -15,8 +16,10 @@ import com.example.greenpass.data.Database
 import com.example.greenpass.ui.base.InfoDialog
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections
+import com.example.greenpass.utils.Particulars
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.fragment_log_in.*
 
 class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
@@ -50,8 +53,8 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
         if (isLoggedIn){
             val action = LogInDirections.loginAccepted()
             navController.navigate(action)
-        }
-        else{
+
+        } else{
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
     }

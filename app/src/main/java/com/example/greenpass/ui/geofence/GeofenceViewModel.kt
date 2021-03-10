@@ -8,6 +8,7 @@ import com.google.android.gms.location.Geofence
 import com.mancj.slideup.SlideUp
 import com.mancj.slideup.SlideUpBuilder
 
+//TODO: Fully implement viewmodel
 class GeofenceViewModel : ViewModel() {
 
     val geofences: MutableLiveData<List<Geofence>> = MutableLiveData(listOf())
@@ -18,7 +19,15 @@ class GeofenceViewModel : ViewModel() {
         
     }
 
-    fun adjustDialog(slideUp: SlideUp){
+    fun adjustDialog(slideUp: SlideUp, value: Boolean? = null){
+        if(value!=null){
+            isDialogOpen.value = value
+            if(value)
+                slideUp.show()
+            else
+                slideUp.hide()
+            return
+        }
         if(isDialogOpen.value == null)
             return
         if (isDialogOpen.value!!){

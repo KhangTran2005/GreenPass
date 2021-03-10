@@ -5,21 +5,27 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
+import android.database.DatabaseErrorHandler
 import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.provider.Telephony
+import android.transition.Slide
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.greenpass.R
+import com.example.greenpass.ui.base.InfoDialog.Companion.TAG
+import com.example.greenpass.utils.Particulars
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -30,17 +36,27 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.PointOfInterest
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import com.mancj.slideup.SlideUp
 import com.mancj.slideup.SlideUpBuilder
 import kotlinx.android.synthetic.main.fragment_geofence.*
 
-class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener {
+class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap.OnPoiClickListener{
     private var locationPermissionGranted = false
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var lastKnownLocation: Location? = null
     private val viewModel: GeofenceViewModel by lazy {
         ViewModelProvider(this).get(GeofenceViewModel::class.java)
     }
+    private lateinit var slideUp: SlideUp
+    private lateinit var lastPOI: PointOfInterest
+    private val username: String by lazy {
+        Particulars.getUsername(requireContext()) ?: ""
+    }
+
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
@@ -62,6 +78,8 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             getDeviceLocation()
         }
 
+        googleMap.setOnPoiClickListener(this)
+
 //        val sydney = LatLng(-34.0, 151.0)
 //        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
 //        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
@@ -78,17 +96,14 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
 
-        val slideUp = SlideUpBuilder(geofence_dialog_box)
+        slideUp = SlideUpBuilder(geofence_dialog_box)
             .withStartState(SlideUp.State.HIDDEN)
             .withStartGravity(Gravity.BOTTOM)
             .build()
-        if(viewModel.isDialogOpen.value == true){
-            slideUp.show()
-        }
-        // TODO: Replace with gesture
-        slide_button.setOnClickListener {
-            viewModel.adjustDialog(slideUp)
-        }
+//        if(viewModel.isDialogOpen.value == true){
+//            slideUp.show()
+//        }
+
     }
 
     private fun getLocationPermission() {
@@ -127,6 +142,125 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener {
             Log.e("Exception: %s", e.message, e)
         }
     }
+
+    fun onRatingBarChangeListener(rating:Double) {
+        Firebase.database.reference
+                .child("users")
+                .child(username)
+                .child("ratings")
+                .get().addOnSuccessListener { ratings ->
+                    if(!ratings.child(lastPOI.placeId).exists()) {
+                        ratings.child(lastPOI.placeId).ref.setValue(0.0).addOnSuccessListener {
+                            onRatingBarChangeListener(rating)
+                        }
+                    } else{
+                        ratings.child(lastPOI.placeId).ref.get().addOnSuccessListener {
+                            val prevRating = (it.value as Number).toDouble()
+                            ratings.child(lastPOI.placeId).ref.setValue(rating)
+
+                            fun updatePlaceRating() {
+                                Firebase.database.reference
+                                        .child("places")
+                                        .child(lastPOI.placeId)
+                                        .child("rating")
+                                        .get().addOnSuccessListener { placeRating ->
+                                            if (!placeRating.exists()) {
+                                                placeRating.child("N")
+                                                        .ref
+                                                        .setValue(0)
+                                                        .addOnSuccessListener {
+                                                            placeRating.child("sum")
+                                                                    .ref
+                                                                    .setValue(0.0)
+                                                            updatePlaceRating()
+                                                        }
+                                            } else{
+                                                val N: Int = (placeRating.child("N").value as Number).toInt()
+                                                val sum = (placeRating.child("sum").value as Number).toDouble()
+                                                if (prevRating < 0.0 + 1e-9 && rating > 0.0) {
+                                                    placeRating.child("N")
+                                                            .ref
+                                                            .setValue(N + 1)
+                                                    placeRating.child("sum")
+                                                            .ref
+                                                            .setValue(sum + rating)
+                                                } else if (prevRating > 0.0 && rating < 0.0 + 1e-9) {
+                                                    placeRating.child("N")
+                                                            .ref
+                                                            .setValue(N - 1)
+                                                    placeRating.child("sum")
+                                                            .ref
+                                                            .setValue(sum - rating)
+                                                } else{
+                                                    placeRating.child("sum")
+                                                            .ref
+                                                            .setValue(sum - prevRating + rating)
+                                                }
+                                            }
+                                            }
+                                        }
+                            updatePlaceRating()
+                        }
+
+                    }
+                }
+    }
+
+
+    override fun onPoiClick(poi: PointOfInterest){
+        // TODO: Add location iamge
+        Log.i(TAG,"Registered POI Click")
+        lastPOI=poi
+        viewModel.adjustDialog(slideUp,true)
+        if(context==null){
+            Log.e(TAG,"Can't get username as context is null")
+            return
+        }
+        val username = Particulars.getUsername(requireContext())
+        if(username == null){
+            Log.e(TAG,"Username unknown")
+            return
+        }
+
+        // "4.0 ★ / 487"
+        poi_nameField.text = poi.name
+
+        Firebase.database.reference
+                .child("places")
+                .child(lastPOI.placeId)
+                .child("rating")
+                .get().addOnSuccessListener { placeRating ->
+                    if (!placeRating.exists()) {
+                        poi_ratingStatField.text = "0.0 ★ / 0"
+                    } else {
+                        val N = (placeRating.child("N")
+                                .value as Number).toInt()
+                        val sum = (placeRating.child("sum")
+                                .value as Number).toDouble()
+                        poi_ratingStatField.text = "%.1f ★ / %d".format(sum / N, N)
+                    }
+                }
+
+        poi_ratingBar.setOnRatingBarChangeListener {_,rating,_ ->
+            onRatingBarChangeListener(rating.toDouble())
+        }
+
+        Firebase.database.reference
+                .child("users")
+                .child(username)
+                .child("ratings")
+                .get().addOnSuccessListener {
+                    if(it.child(lastPOI.placeId).exists()) {
+                        poi_ratingBar.rating = (it.child(lastPOI.placeId).value as Number).toFloat()
+                    }else{
+                        poi_ratingBar.rating = 0.0f
+                    }
+                }
+
+        mMap?.animateCamera(CameraUpdateFactory.newLatLng(poi.latLng))
+    }
+
+
 
     companion object {
         private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1

@@ -13,6 +13,9 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.example.greenpass.R
+import com.example.greenpass.utils.Particulars
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_log_in.*
@@ -46,7 +49,8 @@ class LogIn : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         login_btn.setOnClickListener{
-            //TODO: Do log in things
+            Particulars.writeUserName(user_input.text.toString(),requireContext())
+
             val action = LogInDirections.loginAccepted()
             mCallback.onLogInListener()
             findNavController().navigate(action)
