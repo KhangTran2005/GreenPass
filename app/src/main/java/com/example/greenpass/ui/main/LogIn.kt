@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.Navigation
@@ -19,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.fragment_log_in.*
+import org.mindrot.jbcrypt.BCrypt
 
 class LogIn : Fragment() {
     private lateinit var mCallback: OnLogInListener
@@ -48,12 +50,27 @@ class LogIn : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        login_btn.setOnClickListener{
-            Particulars.writeUserName(user_input.text.toString(),requireContext())
+        // TODO: Default is username:"admin",password:"password"
 
-            val action = LogInDirections.loginAccepted()
-            mCallback.onLogInListener()
-            findNavController().navigate(action)
+        login_btn.setOnClickListener{
+
+            val username = user_input.text.toString()
+            val password = password_input.text.toString()
+
+            Firebase.database.reference
+                    .child("usernameToPassword")
+                    .child(username)
+                    .get().addOnSuccessListener {
+                        if (!it.exists() || !BCrypt.checkpw(password,it.value as String)){
+                            Toast.makeText(requireContext(),"Invalid username or password",Toast.LENGTH_SHORT).show()
+                        } else{
+                            Particulars.writeUserName(user_input.text.toString(),requireContext())
+
+                            val action = LogInDirections.loginAccepted()
+                            mCallback.onLogInListener()
+                            findNavController().navigate(action)
+                        }
+                    }
         }
     }
 }

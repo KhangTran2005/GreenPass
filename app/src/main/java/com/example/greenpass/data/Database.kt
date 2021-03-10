@@ -65,7 +65,7 @@ class Database(
         fun loginAccount(username: String, password: String) : Boolean {
             var res: Boolean = false
             Firebase.database.reference
-                .child("usernamesToPassword")
+                .child("usernameToPassword")
                 .child(username)
                 .get().addOnSuccessListener {
                     if (BCrypt.checkpw(password,it.value as String))
