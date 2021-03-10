@@ -9,19 +9,22 @@
         android:id="@+id/nav_geofence"
         android:name="com.example.greenpass.ui.geofence.GeofenceFragment"
         android:label="Geofence"
-        tools:layout="@layout/fragment_geofence" />
+        tools:layout="@layout/fragment_geofence" >
+    </fragment>
 
     <fragment
         android:id="@+id/nav_userinfo"
         android:name="com.example.greenpass.ui.userinfo.UserInfoFragment"
         android:label="Green Pass"
-        tools:layout="@layout/fragment_userinfo" />
+        tools:layout="@layout/fragment_userinfo" >
+    </fragment>
 
     <fragment
         android:id="@+id/nav_covidinfo"
         android:name="com.example.greenpass.ui.covidinfo.CovidInfoFragment"
         android:label="Covid Info"
-        tools:layout="@layout/fragment_covidinfo" />
+        tools:layout="@layout/fragment_covidinfo" >
+    </fragment>
     <fragment
         android:id="@+id/nav_login"
         android:name="com.example.greenpass.ui.main.LogIn"
@@ -38,4 +41,9 @@
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
     </fragment>
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.example.greenpass.ui.main.Settings"
+        android:label="Settings"
+        tools:layout="@layout/fragment_settings" />
 </navigation>
