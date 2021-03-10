@@ -3,6 +3,7 @@ package com.example.greenpass
 import android.content.Context
 import android.os.Bundle
 import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -12,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.NavController
 import com.example.greenpass.data.Database
 import com.example.greenpass.ui.base.InfoDialog
 import com.example.greenpass.ui.main.LogIn
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
+    private var menu: Menu? = null
     //TODO Dummy Variable, Discard Once FirebaseAuth is implemented
     private var isLoggedIn = false
 
@@ -56,13 +59,24 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
         } else{
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            //TODO: make the settings icon invisible in lock screen
+            menu?.findItem(R.id.action_settings)?.isVisible = false
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
+        this.menu = menu
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        when(item.itemId){
+            R.id.action_settings -> navController.navigate(R.id.settings)
+        }
+        return false
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -72,5 +86,6 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
     override fun onLogInListener() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+        menu?.findItem(R.id.action_settings)?.isVisible = true
     }
 }
