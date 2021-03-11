@@ -1,6 +1,5 @@
 package com.example.greenpass
 
-import android.content.Context
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -13,15 +12,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.navigation.NavController
-import com.example.greenpass.data.Database
-import com.example.greenpass.ui.base.InfoDialog
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections
-import com.example.greenpass.utils.Particulars
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
-import kotlinx.android.synthetic.main.fragment_log_in.*
 
 class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
@@ -59,14 +51,12 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
         } else{
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
-            //TODO: make the settings icon invisible in lock screen
-            menu?.findItem(R.id.action_settings)?.isVisible = false
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.main, menu)
+        menuInflater.inflate(R.menu.main_menu, menu)
         this.menu = menu
         return true
     }
