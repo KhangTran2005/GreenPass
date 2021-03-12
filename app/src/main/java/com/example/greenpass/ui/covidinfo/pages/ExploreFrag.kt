@@ -32,7 +32,7 @@ class ExploreFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = ExploreAdapter(arrayListOf())
+        adapter = ExploreAdapter(arrayListOf(), requireActivity())
 
         country_recycler.apply {
             layoutManager = LinearLayoutManager(context)

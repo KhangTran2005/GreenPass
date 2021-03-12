@@ -37,6 +37,10 @@ android {
 }
 
 dependencies {
+    //Charts
+    implementation 'com.github.blackfizz:eazegraph:1.2.5l@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
+
     //Image Loader
     implementation 'com.squareup.picasso:picasso:2.71828'
 

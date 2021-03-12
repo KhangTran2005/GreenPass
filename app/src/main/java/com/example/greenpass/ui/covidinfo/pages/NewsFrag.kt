@@ -33,7 +33,7 @@ class NewsFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = NewsAdapter(arrayListOf())
+        adapter = NewsAdapter(arrayListOf(), requireActivity())
 
         news_recycler.apply {
             layoutManager = LinearLayoutManager(context)

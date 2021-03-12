@@ -32,7 +32,7 @@ class VaccineFrag : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = VaccineAdapter(Vaccine(listOf(), listOf(), "", ""))
+        adapter = VaccineAdapter(arrayListOf(), requireActivity())
 
         vaccine_recycler.apply {
             layoutManager = LinearLayoutManager(context)
@@ -46,7 +46,7 @@ class VaccineFrag : Fragment() {
     }
 
     private fun updateData(vaccine: Vaccine){
-        adapter.addVaccines(vaccine)
+        adapter.addVaccines(vaccine.data)
         adapter.notifyDataSetChanged()
     }
 }
