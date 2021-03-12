@@ -1,6 +1,8 @@
 package com.example.greenpass
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.material.navigation.NavigationView
@@ -12,16 +14,21 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
+import androidx.navigation.Navigation.findNavController
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections
+import com.example.greenpass.utils.Particulars
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
-    private var menu: Menu? = null
-    //TODO Dummy Variable, Discard Once FirebaseAuth is implemented
-    private var isLoggedIn = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,10 +52,9 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
         navView.setupWithNavController(navController)
 
         //send to main screen if logged in
-        if (isLoggedIn){
+        if (Particulars.getUsername(baseContext) != null){
             val action = LogInDirections.loginAccepted()
             navController.navigate(action)
-
         } else{
             drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         }
@@ -57,7 +63,6 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main_menu, menu)
-        this.menu = menu
         return true
     }
 
@@ -76,6 +81,5 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
     override fun onLogInListener() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-        menu?.findItem(R.id.action_settings)?.isVisible = true
     }
 }
