@@ -4,7 +4,7 @@ import android.content.Context
 import kotlinx.android.synthetic.main.fragment_log_in.*
 
 object Particulars {
-    fun writeUserName(username:String, context: Context){
+    fun writeUserName(username:String?, context: Context){
         val prefs = context.getSharedPreferences("particulars",Context.MODE_PRIVATE)
         with(prefs.edit()){
             putString("username",username)
