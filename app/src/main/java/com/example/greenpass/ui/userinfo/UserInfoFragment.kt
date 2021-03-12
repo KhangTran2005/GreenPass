@@ -1,16 +1,14 @@
 package com.example.greenpass.ui.userinfo
 
-import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.greenpass.R
+import com.example.greenpass.data.Database
 import com.example.greenpass.ui.base.InfoDialog
-import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.utils.Clearance
-import com.example.greenpass.utils.Particulars
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_userinfo.*
@@ -21,9 +19,6 @@ class UserInfoFragment : Fragment(){
     private lateinit var user_name: TextView
     private lateinit var user_clearance: TextView
     private lateinit var user_vacc_date: TextView
-    private val username: String by lazy {
-        Particulars.getUsername(requireContext()) ?: ""
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +50,7 @@ class UserInfoFragment : Fragment(){
         //get user data from Firebase
         Firebase.database.reference
             .child("users")
-            .child(username)
+            .child(Database.username)
             .get().addOnSuccessListener {user ->
                 user_name.text = user.child("name").value.toString()
                user_clearance.text = Clearance.findByValue(user.child("clearance_level").value.toString().toInt()).toString()

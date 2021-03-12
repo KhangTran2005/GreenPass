@@ -8,17 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
+import com.example.greenpass.data.Database
 import com.example.greenpass.utils.Particulars
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_log_in.*
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.mindrot.jbcrypt.BCrypt
 
 class LogIn : Fragment() {
@@ -65,7 +61,8 @@ class LogIn : Fragment() {
                         if (!it.exists() || !BCrypt.checkpw(password,it.value as String)){
                             Toast.makeText(requireContext(),"Invalid username or password",Toast.LENGTH_SHORT).show()
                         } else{
-                            Particulars.writeUserName(user_input.text.toString(),requireContext())
+                            Database.username = user_input.text.toString()
+                            Particulars.writeUserName(Database.username,requireContext())
 
                             val action = LogInDirections.loginAccepted()
                             mCallback.unlockDrawer()

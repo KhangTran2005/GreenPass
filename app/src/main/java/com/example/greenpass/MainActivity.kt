@@ -1,8 +1,6 @@
 package com.example.greenpass
 
-import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.material.navigation.NavigationView
@@ -14,16 +12,10 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.Navigation.findNavController
+import com.example.greenpass.data.Database
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections
 import com.example.greenpass.utils.Particulars
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
@@ -43,7 +35,7 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_userinfo, R.id.nav_geofence, R.id.nav_covidinfo
+                R.id.nav_userinfo, R.id.nav_geofence, R.id.nav_covidinfo, R.id.nav_infractions
             ), drawerLayout
         )
         //make the app bar change with navController
@@ -53,6 +45,7 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
         //send to main screen if logged in
         if (Particulars.getUsername(baseContext) != null){
+            Database.username = Particulars.getUsername(baseContext)!!
             val action = LogInDirections.loginAccepted()
             navController.navigate(action)
         } else{

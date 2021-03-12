@@ -11,8 +11,6 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="vaccines">Vaccines</string>
     <string name="title_activity_covid_info_tab">CovidInfoTabActivity</string>
     <string name="tab_text_1">Tab 1</string>
@@ -20,4 +18,9 @@
     <string name="explore">Explore</string>
     <string name="vaccine">Vaccine</string>
     <string name="news">News</string>
+    <string name="infractions">Infractions</string>
+    <string name="covid_info">Covid Info</string>
+    <string name="geofence">Geofence</string>
+    <string name="green_pass">Green Pass</string>
+    <string name="no_infractions_present">No infractions present</string>
 </resources>

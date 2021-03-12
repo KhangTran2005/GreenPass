@@ -9,23 +9,14 @@ import kotlin.math.ln
 
 data class Geofence (
     var name: String,
-    val marker: Marker,
     val circle: Circle,
     val clearance: Clearance
 ){
-    override fun toString(): String {
-        return listOf(name,marker.position.latitude,marker.position.longitude,circle.radius).joinToString(",")
-    }
     companion object{
         fun addGeofenceToMap(map: GoogleMap, name:String, lat: Double, long: Double, radius: Double, clearance: Int) : Geofence{
             val latLng = LatLng(lat, long)
-            val marker = map.addMarker(MarkerOptions()
-                    .position(latLng)
-                    .title(name))
-            GeofenceFragment.markers.add(marker)
             return Geofence(
                     name,
-                    marker,
                     map.addCircle(CircleOptions()
                             .radius(radius)
                             .center(latLng)

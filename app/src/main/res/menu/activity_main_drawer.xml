@@ -7,14 +7,18 @@
         <item
             android:id="@+id/nav_userinfo"
             android:icon="@drawable/ic_baseline_person_24"
-            android:title="Green Pass" />
-        <item
-            android:id="@+id/nav_geofence"
-            android:icon="@drawable/ic_baseline_map_24"
-            android:title="Geofence" />
+            android:title="@string/green_pass" />
         <item
             android:id="@+id/nav_covidinfo"
             android:icon="@drawable/ic_baseline_info_24"
-            android:title="Covid Info" />
+            android:title="@string/covid_info" />
+        <item
+            android:id="@+id/nav_geofence"
+            android:icon="@drawable/ic_baseline_map_24"
+            android:title="@string/geofence" />
+        <item
+            android:id="@+id/nav_infractions"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:title="@string/infractions" />
     </group>
 </menu>

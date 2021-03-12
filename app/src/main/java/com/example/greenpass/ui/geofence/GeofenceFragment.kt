@@ -5,33 +5,22 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import android.database.DatabaseErrorHandler
-import android.graphics.Point
 import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
-import android.provider.Telephony
-import android.transition.Slide
-import android.transition.Visibility
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RatingBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.greenpass.R
 import com.example.greenpass.data.Database
-import com.example.greenpass.ui.base.InfoDialog.Companion.TAG
 import com.example.greenpass.utils.Clearance
-import com.example.greenpass.utils.Particulars
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -43,22 +32,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.PointOfInterest
-import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.model.Place
-import com.google.android.libraries.places.api.net.FetchPhotoRequest
-import com.google.android.libraries.places.api.net.FetchPhotoResponse
-import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.PlacesClient
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.mancj.slideup.SlideUp
 import com.mancj.slideup.SlideUpBuilder
 import kotlinx.android.synthetic.main.fragment_geofence.*
 
-class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap.OnPoiClickListener, GoogleMap.OnCameraMoveListener {
+class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap.OnPoiClickListener{
     private var locationPermissionGranted = false
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var lastKnownLocation: Location? = null
@@ -68,9 +49,6 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
     private lateinit var slideUp: SlideUp
     private lateinit var lastPOI: PointOfInterest
     private lateinit var placesClient: PlacesClient
-    private val username: String by lazy {
-        Particulars.getUsername(requireContext()) ?: ""
-    }
 
 
     @SuppressLint("MissingPermission")
@@ -97,12 +75,10 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
 
         Firebase.database.reference
                 .child("users")
-                .child(username)
+                .child(Database.username)
                 .child("clearance_level").get().addOnSuccessListener {
-                    Thread{
-                        Database.addGeofencesToMap(googleMap, Clearance.findByValue(it.value.toString().toInt())
-                                ?: Clearance.ANY)
-                    }.start()
+                    Database.addGeofencesToMap(googleMap, Clearance.findByValue(it.value.toString().toInt())
+                            ?: Clearance.ANY)
                 }
 
 //        val sydney = LatLng(-34.0, 151.0)
@@ -171,7 +147,7 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
     fun onRatingBarChangeListener(rating:Double) {
         Firebase.database.reference
                 .child("users")
-                .child(username)
+                .child(Database.username)
                 .child("ratings")
                 .get().addOnSuccessListener { ratings ->
                     if(!ratings.child(lastPOI.placeId).exists()) {
@@ -244,11 +220,6 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
             Log.e(TAG,"Can't get username as context is null")
             return
         }
-        val username = Particulars.getUsername(requireContext())
-        if(username == null){
-            Log.e(TAG,"Username unknown")
-            return
-        }
 
         poi_nameField.text = poi.name.replace("\n"," ")
 
@@ -277,7 +248,7 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
 
         Firebase.database.reference
                 .child("users")
-                .child(username)
+                .child(Database.username)
                 .child("ratings")
                 .get().addOnSuccessListener {
                     if(it.child(lastPOI.placeId).exists()) {
@@ -290,13 +261,6 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
         mMap?.animateCamera(CameraUpdateFactory.newLatLng(poi.latLng))
     }
 
-    //TODO: Make this work
-    override fun onCameraMove() {
-        markers.forEach{
-            it.isVisible = (mMap?.cameraPosition?.zoom ?: Float.POSITIVE_INFINITY) < 7.0
-        }
-    }
-
     companion object {
         private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
         var mMap: GoogleMap? = null
@@ -305,7 +269,6 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
         private val SINGAPORE_BOUNDS = LatLngBounds(
             LatLng(1.103883, 103.455741),
             LatLng(1.787399, 104.373282))
-        var markers: MutableList<Marker> = mutableListOf()
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {

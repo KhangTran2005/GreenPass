@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
+import com.example.greenpass.data.Database
 import com.example.greenpass.utils.Particulars
 import kotlinx.android.synthetic.main.fragment_settings.*
 
@@ -21,6 +22,7 @@ class Settings : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         logout_card.setOnClickListener{
             Particulars.writeUserName(null, requireContext())
+            Database.username = ""
             val action = SettingsDirections.logout()
             (requireActivity() as LogIn.OnLogInListener).lockDrawer()
             findNavController().navigate(action)

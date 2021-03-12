@@ -2,15 +2,11 @@ package com.example.greenpass.data
 
 import android.location.Location
 import android.util.Log
-import com.example.greenpass.ui.geofence.GeofenceFragment
 import com.example.greenpass.utils.Clearance
 import com.example.greenpass.utils.Geofence
 import com.google.android.gms.maps.GoogleMap
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import org.mindrot.jbcrypt.BCrypt
-import java.util.*
-import kotlin.random.Random
 
 class Database(
     val userId: String,
@@ -32,7 +28,7 @@ class Database(
 
     companion object{
         var geofences: MutableList<Geofence>? = null
-
+        lateinit var username: String
         fun fetchGeofences(mMap: GoogleMap, N: Int = -1) {
             if(N == -1){
                 Firebase.database.reference
@@ -42,7 +38,6 @@ class Database(
                     }
             } else {
                 geofences = mutableListOf()
-                GeofenceFragment.markers = mutableListOf()
                 for (i in 0 until N) {
                     Firebase.database.reference
                             .child("geofences")
@@ -63,8 +58,8 @@ class Database(
                     .filter {
                         clearance <= it.clearance
                     }.forEach{
-                                Geofence.addGeofenceToMap(mMap,it.name,it.marker.position.latitude,
-                                        it.marker.position.longitude,it.circle.radius,it.clearance.ordinal)
+                                Geofence.addGeofenceToMap(mMap,it.name,it.circle.center.latitude,
+                                        it.circle.center.longitude,it.circle.radius,it.clearance.ordinal)
                     }
             } else{
                 fetchGeofences(mMap)

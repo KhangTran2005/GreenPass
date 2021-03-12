@@ -20,6 +20,13 @@
     </fragment>
 
     <fragment
+        android:id="@+id/nav_infractions"
+        android:name="com.example.greenpass.ui.infractions.InfractionFragment"
+        android:label="Infractions"
+        tools:layout="@layout/infraction_fragment" >
+    </fragment>
+
+    <fragment
         android:id="@+id/nav_covidinfo"
         android:name="com.example.greenpass.ui.covidinfo.CovidInfoFragment"
         android:label="Covid Info"

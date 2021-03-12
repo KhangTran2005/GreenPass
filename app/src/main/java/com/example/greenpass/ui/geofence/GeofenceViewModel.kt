@@ -8,7 +8,6 @@ import com.google.android.gms.location.Geofence
 import com.mancj.slideup.SlideUp
 import com.mancj.slideup.SlideUpBuilder
 
-//TODO: Fully implement viewmodel
 class GeofenceViewModel : ViewModel() {
 
     val geofences: MutableLiveData<List<Geofence>> = MutableLiveData(listOf())
