@@ -25,7 +25,9 @@ class LogIn : Fragment() {
     private lateinit var mCallback: OnLogInListener
 
     interface OnLogInListener{
-        fun onLogInListener()
+        fun unlockDrawer()
+
+        fun lockDrawer()
     }
 
     override fun onAttach(context: Context) {
@@ -66,7 +68,7 @@ class LogIn : Fragment() {
                             Particulars.writeUserName(user_input.text.toString(),requireContext())
 
                             val action = LogInDirections.loginAccepted()
-                            mCallback.onLogInListener()
+                            mCallback.unlockDrawer()
                             findNavController().navigate(action)
                         }
                     }
