@@ -42,12 +42,7 @@ class CountryDetail : Fragment() {
         continent.text = country.continent
         population.text = "Population: ${country.population}"
         cases_tv.text = country.cases.toString()
-
-//        val total_percent: Double = (country.active + country.deaths + country.recovered).toDouble()
-//
-//        active_tv.text = "Active (${String.format("%.2f", (country.active.toDouble() /total_percent) * 100)}%)"
-//        deaths_tv.text = "Deaths (${String.format("%.2f", (country.deaths.toDouble() /total_percent) * 100)}%)"
-//        recovered_tv.text = "Recovered (${String.format("%.2f", (country.recovered.toDouble()/total_percent) * 100)}%)"
+        vactest_tv.text = country.tests.toString()
 
         piechart.addPieSlice(PieModel("Active", country.active.toFloat(), Color.RED))
         piechart.addPieSlice(PieModel("Deaths", country.deaths.toFloat(), Color.GRAY))
