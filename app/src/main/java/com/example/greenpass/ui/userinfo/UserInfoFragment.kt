@@ -2,13 +2,13 @@ package com.example.greenpass.ui.userinfo
 
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.greenpass.R
 import com.example.greenpass.ui.base.InfoDialog
+import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.utils.Clearance
 import com.example.greenpass.utils.Particulars
 import com.google.firebase.database.ktx.database
@@ -30,12 +30,22 @@ class UserInfoFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        setHasOptionsMenu(true)
+
         val root = inflater.inflate(R.layout.fragment_userinfo, container, false)
         return root
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(R.id.action_settings).isVisible = true
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         //Initializing field text views
         user_name = name.getChildAt(0) as TextView
         user_clearance = clearance.getChildAt(0) as TextView
