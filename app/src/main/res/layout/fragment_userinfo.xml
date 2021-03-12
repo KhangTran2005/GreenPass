@@ -51,7 +51,7 @@
                     android:layout_gravity="center"
                     android:padding="24dp"
                     android:textAlignment="center"
-                    android:text="Human Person"
+                    tools:text="Human Person"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -85,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:padding="24dp"
-                    android:text="OutPatient"
+                    tools:text="OutPatient"
                     android:textAppearance="?attr/textAppearanceHeadline6" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -120,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:padding="24dp"
-                        android:text="11-Sept-2001"
+                        tools:text="11-Sept-2001"
                         android:textAppearance="?attr/textAppearanceHeadline6" />
 
                 </com.google.android.material.card.MaterialCardView>

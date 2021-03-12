@@ -26,7 +26,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.greenpass.R
+import com.example.greenpass.data.Database
 import com.example.greenpass.ui.base.InfoDialog.Companion.TAG
+import com.example.greenpass.utils.Clearance
 import com.example.greenpass.utils.Particulars
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.Status
@@ -56,7 +58,7 @@ import com.mancj.slideup.SlideUp
 import com.mancj.slideup.SlideUpBuilder
 import kotlinx.android.synthetic.main.fragment_geofence.*
 
-class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap.OnPoiClickListener{
+class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap.OnPoiClickListener, GoogleMap.OnCameraMoveListener {
     private var locationPermissionGranted = false
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var lastKnownLocation: Location? = null
@@ -92,6 +94,16 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
         }
 
         googleMap.setOnPoiClickListener(this)
+
+        Firebase.database.reference
+                .child("users")
+                .child(username)
+                .child("clearance_level").get().addOnSuccessListener {
+                    Thread{
+                        Database.addGeofencesToMap(googleMap, Clearance.findByValue(it.value.toString().toInt())
+                                ?: Clearance.ANY)
+                    }.start()
+                }
 
 //        val sydney = LatLng(-34.0, 151.0)
 //        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
@@ -225,7 +237,6 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
 
 
     override fun onPoiClick(poi: PointOfInterest){
-        // TODO: Add location iamge
         Log.i(TAG,"Registered POI Click")
         lastPOI=poi
         viewModel.adjustDialog(slideUp,true)
@@ -239,7 +250,6 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
             return
         }
 
-        // "4.0 ★ / 487"
         poi_nameField.text = poi.name.replace("\n"," ")
 
         Firebase.database.reference
@@ -280,7 +290,12 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
         mMap?.animateCamera(CameraUpdateFactory.newLatLng(poi.latLng))
     }
 
-
+    //TODO: Make this work
+    override fun onCameraMove() {
+        markers.forEach{
+            it.isVisible = (mMap?.cameraPosition?.zoom ?: Float.POSITIVE_INFINITY) < 7.0
+        }
+    }
 
     companion object {
         private const val PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1
@@ -290,6 +305,7 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
         private val SINGAPORE_BOUNDS = LatLngBounds(
             LatLng(1.103883, 103.455741),
             LatLng(1.787399, 104.373282))
+        var markers: MutableList<Marker> = mutableListOf()
     }
 
     override fun onMarkerClick(p0: Marker?): Boolean {

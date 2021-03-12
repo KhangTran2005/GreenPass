@@ -2,6 +2,10 @@ package com.example.greenpass.data
 
 import android.location.Location
 import android.util.Log
+import com.example.greenpass.ui.geofence.GeofenceFragment
+import com.example.greenpass.utils.Clearance
+import com.example.greenpass.utils.Geofence
+import com.google.android.gms.maps.GoogleMap
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import org.mindrot.jbcrypt.BCrypt
@@ -24,53 +28,47 @@ class Database(
         userInfoDatabase.child("longitude").setValue(long)
         Log.i("latitude update","Changed latitude to $lat")
         Log.i("longitude update","Changed longitude to $long")
-
     }
 
-
     companion object{
-        // Notice that passwords are indeed hashed with BCrypt
-        fun createAccount(username: String, password: String) : String{
-            Firebase.database.reference
-                .child("usernamesToPassword")
-                .child(username)
-                .setValue("password",BCrypt.hashpw(password,BCrypt.gensalt()))
+        var geofences: MutableList<Geofence>? = null
 
-            val userId: String = generateUserId()
-            Firebase.database.reference
-                .child("usernamesToUserId")
-                .child(username)
-                .setValue("userId", userId)
-            return userId
-        }
-
-        fun generateUserId() : String{
-            val charPool = (65..65+25).map{ it.toChar() } + (97..97+25).map{ it.toChar() }
-            return Date().time.toString() + (1..8)
-                .map{ Random.nextInt(0,charPool.size) }
-                .map{charPool::get}
-                .joinToString("")
-        }
-
-        // username must be 8-20 characters long, with
-        fun checkUsername(username: String): Boolean{
-            return username.matches(Regex("^(?=.{8,20}\$)(?![_.])(?!.*[_.]{2})[\\w]+(?<![_.])\$"))
-        }
-
-        fun checkPassword(password: String): Boolean{
-            return password.matches(Regex("^(?=\\S+).{6,}"))
-        }
-
-        fun loginAccount(username: String, password: String) : Boolean {
-            var res: Boolean = false
-            Firebase.database.reference
-                .child("usernameToPassword")
-                .child(username)
-                .get().addOnSuccessListener {
-                    if (BCrypt.checkpw(password,it.value as String))
-                        res = true
+        fun fetchGeofences(mMap: GoogleMap, N: Int = -1) {
+            if(N == -1){
+                Firebase.database.reference
+                    .child("geofences")
+                    .child("N").get().addOnSuccessListener {
+                        fetchGeofences(mMap, it.value.toString().toInt())
+                    }
+            } else {
+                geofences = mutableListOf()
+                GeofenceFragment.markers = mutableListOf()
+                for (i in 0 until N) {
+                    Firebase.database.reference
+                            .child("geofences")
+                            .child(i.toString()).get().addOnSuccessListener {
+                                val name = it.child("name").value.toString()
+                                val lat = it.child("lat").value.toString().toDouble()
+                                val long = it.child("long").value.toString().toDouble()
+                                val radius = it.child("radius").value.toString().toDouble()
+                                val clearance = it.child("clearance").value.toString().toInt()
+                                geofences!!.add(Geofence.addGeofenceToMap(mMap,name,lat,long,radius,clearance))
+                            }
                 }
-            return res
+            }
+        }
+        fun addGeofencesToMap(mMap: GoogleMap,clearance: Clearance = Clearance.ANY){
+            if(geofences != null){
+                geofences!!
+                    .filter {
+                        clearance <= it.clearance
+                    }.forEach{
+                                Geofence.addGeofenceToMap(mMap,it.name,it.marker.position.latitude,
+                                        it.marker.position.longitude,it.circle.radius,it.clearance.ordinal)
+                    }
+            } else{
+                fetchGeofences(mMap)
+            }
         }
     }
 }

@@ -51,8 +51,6 @@ class UserInfoFragment : Fragment(){
         user_clearance = clearance.getChildAt(0) as TextView
         user_vacc_date  = vacc_date.getChildAt(0) as TextView
 
-        var age = 0
-        var vacc_place = ""
 
         //get user data from Firebase
         Firebase.database.reference
@@ -60,22 +58,21 @@ class UserInfoFragment : Fragment(){
             .child(username)
             .get().addOnSuccessListener {user ->
                 user_name.text = user.child("name").value.toString()
-                user_clearance.text = user.child("clearance_level").value.toString()
+               user_clearance.text = Clearance.findByValue(user.child("clearance_level").value.toString().toInt()).toString()
                 user_vacc_date.text = user.child("vaccination_date").value.toString()
-                age = user.child("age").value.toString().toInt()
-                vacc_place = user.child("vaccination_place").value.toString()
+                val age = user.child("age").value.toString().toInt()
+                val vacc_place = user.child("vaccination_place").value.toString()
+
+                //set up on click listeners for descriptions on cards
+                name.setOnClickListener{
+                    InfoDialog(user_name.text.toString(), "Age: $age").show(childFragmentManager, InfoDialog.TAG)
+                }
+                clearance.setOnClickListener{
+                    InfoDialog("${user_clearance.text}", Clearance.getDesc("${user_clearance.text}")).show(childFragmentManager, InfoDialog.TAG)
+                }
+                vacc_date.setOnClickListener{
+                    InfoDialog("${user_vacc_date.text}", "Vaccinated at: $vacc_place").show(childFragmentManager, InfoDialog.TAG)
+                }
             }
-
-        //set up on click listeners for descriptions on cards
-        name.setOnClickListener{
-            InfoDialog(user_name.text.toString(), "Age: $age").show(childFragmentManager, InfoDialog.TAG)
-        }
-        clearance.setOnClickListener{
-            InfoDialog("${user_clearance.text}", Clearance.getDesc("${user_clearance.text}")).show(childFragmentManager, InfoDialog.TAG)
-        }
-        vacc_date.setOnClickListener{
-            InfoDialog("${user_vacc_date.text}", "Vaccinated at: $vacc_place").show(childFragmentManager, InfoDialog.TAG)
-        }
-
     }
 }
