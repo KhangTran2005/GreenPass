@@ -39,26 +39,19 @@ android {
 dependencies {
     //Image Loader
     implementation 'com.squareup.picasso:picasso:2.71828'
-
     //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1'
-
     //Moshi
     implementation "com.squareup.moshi:moshi-kotlin:$version_moshi"
-
     //Serialization
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1"
-
     //Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
-
     //Google Maps
     implementation 'com.google.android.libraries.places:places:2.4.0'
-
     // BCrypt
     implementation "org.mindrot:jbcrypt:0.4"
-
     // Slide-up
     implementation 'com.github.mancj:SlideUp-Android:2.2.8'
 

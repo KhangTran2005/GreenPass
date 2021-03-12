@@ -6,12 +6,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.database.DatabaseErrorHandler
+import android.graphics.Point
 import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
 import android.provider.Telephony
 import android.transition.Slide
+import android.transition.Visibility
 import android.util.Log
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -26,6 +28,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.greenpass.R
 import com.example.greenpass.ui.base.InfoDialog.Companion.TAG
 import com.example.greenpass.utils.Particulars
+import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.common.api.Status
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -37,6 +41,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.PointOfInterest
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.libraries.places.api.net.FetchPhotoRequest
+import com.google.android.libraries.places.api.net.FetchPhotoResponse
+import com.google.android.libraries.places.api.net.FetchPlaceRequest
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
@@ -53,6 +65,7 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
     }
     private lateinit var slideUp: SlideUp
     private lateinit var lastPOI: PointOfInterest
+    private lateinit var placesClient: PlacesClient
     private val username: String by lazy {
         Particulars.getUsername(requireContext()) ?: ""
     }
@@ -227,7 +240,7 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
         }
 
         // "4.0 ★ / 487"
-        poi_nameField.text = poi.name
+        poi_nameField.text = poi.name.replace("\n"," ")
 
         Firebase.database.reference
                 .child("places")
@@ -235,13 +248,16 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
                 .child("rating")
                 .get().addOnSuccessListener { placeRating ->
                     if (!placeRating.exists()) {
-                        poi_ratingStatField.text = "0.0 ★ / 0"
+                        ave_rating_field.text = "0.0"
+                        rating_no_field.text = "0"
                     } else {
                         val N = (placeRating.child("N")
                                 .value as Number).toInt()
                         val sum = (placeRating.child("sum")
                                 .value as Number).toDouble()
-                        poi_ratingStatField.text = "%.1f ★ / %d".format(sum / N, N)
+                        val ave = if (N == 0) 0.0 else sum / N
+                        ave_rating_field.text = "$ave"
+                        rating_no_field.text = "$N"
                     }
                 }
 
