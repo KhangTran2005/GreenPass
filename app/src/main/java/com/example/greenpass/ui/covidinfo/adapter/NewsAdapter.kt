@@ -9,13 +9,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.greenpass.R
+import com.example.greenpass.data.model.ArticleWrapper
 import com.example.greenpass.data.model.Country
 import com.example.greenpass.data.model.News
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.lang.Exception
 
-class NewsAdapter(private val articles: ArrayList<News.Article>) : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
+class NewsAdapter(private val articles: ArrayList<ArticleWrapper>) : RecyclerView.Adapter<NewsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsAdapter.ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.news_card, parent, false)
         return ViewHolder(v)
@@ -34,21 +35,23 @@ class NewsAdapter(private val articles: ArrayList<News.Article>) : RecyclerView.
         var img = item.findViewById<ImageView>(R.id.thumbnail)
         var title = item.findViewById<TextView>(R.id.news_title)
         var published = item.findViewById<TextView>(R.id.published)
+        var newsType = item.findViewById<ImageView>(R.id.news_type)
 
         @SuppressLint("SetTextI18n")
-        fun bind(position: Int, articles: List<News.Article>){
-            Picasso.get().load(articles[position].urlToImage).into(img, object : Callback {
+        fun bind(position: Int, articles: List<ArticleWrapper>){
+            Picasso.get().load(articles[position].article.urlToImage).into(img, object : Callback {
                 override fun onSuccess() {}
                 override fun onError(e: Exception?) {
                     img.visibility = View.GONE
                 }
             })
-            title.text = articles[position].title
-            published.text = "Published On: ${articles[position].pubDate.substring(0, 10)}"
+            title.text = articles[position].article.title
+            published.text = "Published On: ${articles[position].article.pubDate.substring(0, 10)}"
+            newsType.setImageResource(articles[position].icon)
         }
     }
 
-    fun addArticles(articles: List<News.Article>){
+    fun addArticles(articles: List<ArticleWrapper>){
         this.articles.apply {
             clear()
             addAll(articles)

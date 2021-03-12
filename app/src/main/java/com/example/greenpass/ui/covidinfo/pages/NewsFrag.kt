@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.greenpass.R
+import com.example.greenpass.data.model.ArticleWrapper
 import com.example.greenpass.data.model.News
 import com.example.greenpass.ui.covidinfo.adapter.NewsAdapter
 import com.example.greenpass.ui.covidinfo.viewmodel.NewsViewModel
@@ -45,7 +46,7 @@ class NewsFrag : Fragment() {
         })
     }
 
-    private fun updateData(articles: List<News.Article>){
+    private fun updateData(articles: List<ArticleWrapper>){
         adapter.addArticles(articles)
         adapter.notifyDataSetChanged()
     }

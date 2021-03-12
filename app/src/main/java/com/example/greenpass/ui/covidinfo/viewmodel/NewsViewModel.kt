@@ -6,16 +6,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.greenpass.data.api.InfoApi
+import com.example.greenpass.data.model.ArticleWrapper
 import com.example.greenpass.data.model.Country
 import com.example.greenpass.data.model.News
 import kotlinx.coroutines.launch
 import java.lang.Exception
+import java.util.*
 
 class NewsViewModel : ViewModel() {
 
-    private val _response = MutableLiveData<List<News.Article>>()
+    private val _response = MutableLiveData<List<ArticleWrapper>>()
 
-    val response: LiveData<List<News.Article>>
+    val response: LiveData<List<ArticleWrapper>>
         get() = _response
 
     init {
@@ -25,17 +27,19 @@ class NewsViewModel : ViewModel() {
     private fun fetchNews() {
         viewModelScope.launch {
             try{
-                val vaccine = InfoApi.retrofitService.getVaccNews()
-                val health = InfoApi.retrofitService.getHealthNews()
-                val corona = InfoApi.retrofitService.getCovNews()
+                val vaccine = InfoApi.newsService.getVaccNews()
+                val health = InfoApi.newsService.getHealthNews()
+                val corona = InfoApi.newsService.getCovNews()
 
-                val vaccineArticles = vaccine.news
-                val healthArticles = health.news
-                val coronaArticles = corona.news
+                val vaccineArticles = ArticleWrapper.toWrapper(vaccine.news, 1)
+                val healthArticles = ArticleWrapper.toWrapper(health.news, 2)
+                val coronaArticles = ArticleWrapper.toWrapper(corona.news, 3)
 
-                Log.d("debug", vaccineArticles.toString())
+                val responseList: MutableList<ArticleWrapper> = mutableListOf(vaccineArticles, healthArticles, coronaArticles).flatten().toMutableList()
 
-                _response.value = listOf(vaccineArticles, healthArticles, coronaArticles).flatten()
+                responseList.shuffle()
+
+                _response.value = responseList
             }
             catch(e: Exception){
 

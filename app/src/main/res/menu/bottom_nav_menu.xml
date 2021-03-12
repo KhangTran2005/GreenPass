@@ -7,7 +7,7 @@
     <item
         android:id="@+id/vaccine"
         android:title="@string/vaccines"
-        android:icon="@drawable/vaccines"
+        android:icon="@drawable/health"
         />
     <item
         android:id="@+id/news"

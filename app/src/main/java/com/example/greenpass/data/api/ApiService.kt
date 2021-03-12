@@ -28,10 +28,9 @@ private val okHttp = OkHttpClient.Builder().addInterceptor{ chain ->
     return@addInterceptor chain.proceed(request)
 }
 
-private val retrofit_news = Retrofit.Builder()
+private val retrofit_news = Retrofit.Builder().client(okHttp.build())
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .baseUrl(BASE_URL_NEWS)
-        .client(okHttp.build())
         .build()
 
 private val retrofit = Retrofit.Builder()
