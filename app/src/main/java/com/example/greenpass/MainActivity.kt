@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -17,6 +20,7 @@ import com.example.greenpass.data.Database
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections
 import com.example.greenpass.utils.Particulars
+import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
@@ -44,10 +48,21 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
         //make so the display thing changes with navController
         navView.setupWithNavController(navController)
 
+        //get header views
+        val avatarView = (navView.getHeaderView(0) as LinearLayout).getChildAt(0) as ImageView
+        val nameView = (navView.getHeaderView(0) as LinearLayout).getChildAt(1) as TextView
+        val idView = (navView.getHeaderView(0) as LinearLayout).getChildAt(2) as TextView
+
         //send to main screen if logged in
         if (Particulars.getUsername(baseContext) != null){
             Database.username = Particulars.getUsername(baseContext)!!
             Database.user = Particulars.getUser(baseContext)!!
+
+            Database.user?.let {
+                nameView.text = it.name
+                idView.text = it.ID
+            }
+
             val action = LogInDirections.loginAccepted()
             navController.navigate(action)
         } else{
