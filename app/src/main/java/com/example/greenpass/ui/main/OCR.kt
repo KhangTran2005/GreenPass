@@ -3,29 +3,38 @@ package com.example.greenpass.ui.main
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
+import android.media.ToneGenerator
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.SurfaceHolder
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
+import com.google.android.gms.vision.Detector.Detections
+import com.google.android.gms.vision.barcode.Barcode
+import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
 import kotlinx.android.synthetic.main.fragment_o_c_r.*
+import java.util.*
 
 
 class OCR : Fragment() {
 
     private lateinit var mCameraSource: CameraSource
     private lateinit var textRecognizer: TextRecognizer
+    private var name: String? = null
+    private var id: String? = null
+    private var DoB: String? = null
+    private var sex: String? = null
+    private var nationality: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,8 +48,13 @@ class OCR : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         //create Text recognizer stuff
         textRecognizer = TextRecognizer.Builder(requireContext()).build()
+
         if (!textRecognizer.isOperational) {
-            Toast.makeText(requireContext(), "Dependencies are not loaded yet...please try after few moment!!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                "Dependencies are not loaded yet...please try after few moment!!",
+                Toast.LENGTH_SHORT
+            ).show()
             return
         }
         else{
@@ -56,9 +70,11 @@ class OCR : Fragment() {
         surface_camera_preview.holder.addCallback(object : SurfaceHolder.Callback {
             override fun surfaceChanged(holder: SurfaceHolder, p1: Int, p2: Int, p3: Int) {
             }
+
             override fun surfaceDestroyed(holder: SurfaceHolder) {
                 mCameraSource.stop()
             }
+
             @SuppressLint("MissingPermission")
             override fun surfaceCreated(holder: SurfaceHolder) {
                 try {
@@ -68,15 +84,16 @@ class OCR : Fragment() {
                         requestForPermission()
                     }
                 } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "Error:  ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Error:  ${e.message}", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         })
 
-        setUpDetectorProcessor()
+        setUpTextDetectorProcessor()
     }
 
-    private fun setUpDetectorProcessor(){
+    private fun setUpTextDetectorProcessor(){
         textRecognizer.setProcessor(object : Detector.Processor<TextBlock> {
             override fun release() {}
 
@@ -94,8 +111,55 @@ class OCR : Fragment() {
                         stringBuilder.append(item.value)
                         stringBuilder.append("\n")
                     }
-                    tv_result.text = stringBuilder.toString()
-                    Log.d("debug", stringBuilder.toString())
+                    tv_result?.text = stringBuilder.toString()
+                    val scanner = Scanner(stringBuilder.toString())
+                    try{
+                        while (scanner.hasNext()) {
+                            var line = scanner.nextLine()
+                            when {
+                                line.matches("FIN .*".toRegex()) || line.matches("IDENTITY CARD NO. .*".toRegex()) -> {
+                                    Log.d("debug", "ID: ${line.substring(4, 13)}")
+                                    id = line.substring(4, 13)
+                                }
+                                line.matches("Name".toRegex()) -> {
+                                    line = scanner.nextLine()
+                                    Log.d("debug", "Name: $line")
+                                    name = line
+                                }
+                                line.matches("Race".toRegex()) -> {
+                                    line = scanner.nextLine()
+                                    Log.d("debug", "Race: $line")
+                                    //TODO: implement race
+                                }
+                                line.matches("Sex".toRegex()) -> {
+                                    line = scanner.nextLine()
+                                    if (line.matches("\\d{2}-\\d{2}-\\d{4}".toRegex())){
+                                        Log.d("debug", "DoB: $line")
+                                        DoB = line
+                                    }
+                                    line = scanner.nextLine()
+                                    if (line.matches(".".toRegex())){
+                                        Log.d("debug", "Gender: $line")
+                                        sex = line
+                                    }
+                                }
+                                line.matches("Nationality".toRegex()) || line.matches("Country of birth".toRegex()) -> {
+                                    line = scanner.nextLine()
+                                    Log.d("debug", "Nationality: $line")
+                                    nationality = line
+                                }
+                            }
+                        }
+                    }
+                    catch(e: Exception){
+                        Log.d("debug", "An exception occured: ${e.message}")
+                    }
+                    finally {
+                        if (name != null && id != null && DoB != null && sex != null && nationality != null){
+                            Log.d("debug", "Done Scanning!")
+                            //TODO implement further data processing
+                        }
+                    }
                 }
             }
         })
@@ -109,23 +173,31 @@ class OCR : Fragment() {
         requestPermissions(arrayOf(Manifest.permission.CAMERA), 10)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when(requestCode){
             10 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(requireContext(),
+                    Toast.makeText(
+                        requireContext(),
                         "Camera Permission Granted",
-                        Toast.LENGTH_SHORT)
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
 
                     val refresh = OCRDirections.refresh()
                     findNavController().navigate(refresh)
 
                 } else {
-                    Toast.makeText(requireContext(),
+                    Toast.makeText(
+                        requireContext(),
                         "Camera Permission Denied",
-                        Toast.LENGTH_SHORT)
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
