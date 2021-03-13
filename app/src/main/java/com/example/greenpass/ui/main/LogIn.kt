@@ -49,6 +49,11 @@ class LogIn : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        register_tv.setOnClickListener{
+            val action = LogInDirections.register()
+            findNavController().navigate(action)
+        }
+
         // TODO: Default is username:"admin",password:"password"
 
         login_btn.setOnClickListener{

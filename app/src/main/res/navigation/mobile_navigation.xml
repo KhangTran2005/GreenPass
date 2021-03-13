@@ -74,6 +74,9 @@
             app:exitAnim="@android:anim/slide_out_right"
             app:popEnterAnim="@android:anim/slide_in_left"
             app:popExitAnim="@android:anim/slide_out_right" />
+        <action
+            android:id="@+id/register"
+            app:destination="@id/Register" />
     </fragment>
     <fragment
         android:id="@+id/settings"
@@ -96,4 +99,24 @@
         android:id="@+id/newsView"
         android:name="com.example.greenpass.ui.covidinfo.detailed.NewsView"
         android:label="NewsView" />
+    <fragment
+        android:id="@+id/Register"
+        android:name="com.example.greenpass.ui.main.Register"
+        android:label="Register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/gotoScan"
+            app:destination="@id/OCR" />
+        <action
+            android:id="@+id/redirectToHome"
+            app:destination="@id/nav_userinfo" />
+    </fragment>
+    <fragment
+        android:id="@+id/OCR"
+        android:name="com.example.greenpass.ui.main.OCR"
+        android:label="OCR" >
+        <action
+            android:id="@+id/gotoRegister"
+            app:destination="@id/Register" />
+    </fragment>
 </navigation>

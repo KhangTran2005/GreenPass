@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    tools:context=".ui.main.LogIn">
+    tools:context=".ui.main.OCR">
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -95,37 +95,22 @@
             </LinearLayout>
 
             <Button
-                android:id="@+id/login_btn"
+                android:id="@+id/scan_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Log In"
+                android:text="Scan NRIC"
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 />
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/register_btn"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="4dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Don't have an account?"
-                    android:textAppearance="?attr/textAppearanceSubtitle2"
-                    />
-
-                <TextView
-                    android:id="@+id/register_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Register Now!"
-                    android:layout_marginStart="8dp"
-                    android:textAppearance="?attr/textAppearanceSubtitle2"
-                    android:textColor="?attr/colorAccent"
-                    />
-
-            </LinearLayout>
+                android:text="Register"
+                android:layout_gravity="center"
+                android:textStyle="bold"
+                />
 
         </LinearLayout>
 
