@@ -10,7 +10,7 @@
             android:title="@string/green_pass" />
         <item
             android:id="@+id/nav_covidinfo"
-            android:icon="@drawable/ic_baseline_info_24"
+            android:icon="@drawable/ic_baseline_public_24"
             android:title="@string/covid_info" />
         <item
             android:id="@+id/nav_geofence"
