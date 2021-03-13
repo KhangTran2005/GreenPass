@@ -87,10 +87,146 @@
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/name_layout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Name: "
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    />
+
+                <EditText
+                    android:id="@+id/name_input"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Perry The Person"
+                    android:paddingStart="5dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/age_layout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Age: "
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    />
+
+                <EditText
+                    android:id="@+id/age_input"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="69"
+                    android:paddingStart="5dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/dob_layout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="DoB: "
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    />
+
+                <EditText
+                    android:id="@+id/DoB_input"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="7-12-1941"
+                    android:paddingStart="5dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/gender_layout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sex: "
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    />
+
+                <EditText
+                    android:id="@+id/sex_input"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="Male"
+                    android:paddingStart="5dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/nationality_layout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nationality: "
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    />
+
+                <EditText
+                    android:id="@+id/nationality_input"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="German"
+                    android:paddingStart="5dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/nric_layout"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="NRIC/FIN: "
+                    android:paddingEnd="5dp"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
+                    />
+
+                <EditText
+                    android:id="@+id/nric_input"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:hint="G6712127X"
+                    android:paddingStart="5dp" />
 
             </LinearLayout>
 
@@ -98,7 +234,7 @@
                 android:id="@+id/scan_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Scan NRIC"
+                android:text="Scan NRIC/FIN"
                 android:layout_gravity="center"
                 android:textStyle="bold"
                 />

@@ -117,7 +117,13 @@
         android:label="OCR" >
         <action
             android:id="@+id/gotoRegister"
-            app:destination="@id/Register" />
+            app:destination="@id/Register">
+            <argument
+                android:name="user_new"
+                android:defaultValue="null"
+                app:argType="string"
+                />
+        </action>
         <action
             android:id="@+id/refresh"
             app:destination="@id/OCR"

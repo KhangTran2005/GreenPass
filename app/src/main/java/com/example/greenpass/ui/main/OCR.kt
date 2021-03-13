@@ -15,6 +15,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
+import com.example.greenpass.data.model.User
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
 import com.google.android.gms.vision.Detector.Detections
@@ -23,6 +24,8 @@ import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
 import kotlinx.android.synthetic.main.fragment_o_c_r.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.util.*
 
 
@@ -157,7 +160,10 @@ class OCR : Fragment() {
                     finally {
                         if (name != null && id != null && DoB != null && sex != null && nationality != null){
                             Log.d("debug", "Done Scanning!")
-                            //TODO implement further data processing
+                            val age = (Calendar.getInstance().get(Calendar.YEAR) - (DoB?.substring(6, 10)?.toInt() ?: 0)).toString()
+                            val user = User(name!!, id!!, age, DoB!!, nationality!!, sex!!)
+                            val action = OCRDirections.gotoRegister(Json.encodeToString(user))
+                            findNavController().navigate(action)
                         }
                     }
                 }

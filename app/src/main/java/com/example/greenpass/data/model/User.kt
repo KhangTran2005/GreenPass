@@ -11,8 +11,8 @@ data class User(
     var DoB: String,
     var nationality: String,
     var sex: String,
-    var clearance: Clearance?,
-    var vacc_date: String?,
-    var vacc_loc: String?
+    var clearance: Clearance = Clearance.ANY,
+    var vacc_date: String = "",
+    var vacc_loc: String = ""
 ) {
 }
