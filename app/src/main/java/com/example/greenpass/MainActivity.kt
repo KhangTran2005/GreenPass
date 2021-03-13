@@ -1,6 +1,7 @@
 package com.example.greenpass
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.material.navigation.NavigationView
@@ -46,6 +47,7 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
         //send to main screen if logged in
         if (Particulars.getUsername(baseContext) != null){
             Database.username = Particulars.getUsername(baseContext)!!
+            Database.user = Particulars.getUser(baseContext)!!
             val action = LogInDirections.loginAccepted()
             navController.navigate(action)
         } else{

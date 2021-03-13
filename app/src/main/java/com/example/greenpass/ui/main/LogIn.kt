@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
 import com.example.greenpass.data.Database
+import com.example.greenpass.data.model.User
+import com.example.greenpass.utils.Clearance
 import com.example.greenpass.utils.Particulars
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -64,9 +66,27 @@ class LogIn : Fragment() {
                             Database.username = user_input.text.toString()
                             Particulars.writeUserName(Database.username,requireContext())
 
-                            val action = LogInDirections.loginAccepted()
-                            mCallback.unlockDrawer()
-                            findNavController().navigate(action)
+                            Firebase.database.reference
+                                .child("users")
+                                .child(Database.username)
+                                .get().addOnSuccessListener{user ->
+                                    val name = user.child("name").value.toString()
+                                    val clearance = Clearance.findByValue(user.child("clearance_level").value.toString().toInt())
+                                    val vacc_date = user.child("vaccination_date").value.toString()
+                                    val age = user.child("age").value.toString()
+                                    val vacc_loc = user.child("vaccination_place").value.toString()
+                                    val DoB = user.child("DoB").value.toString()
+                                    val ID = user.child("ID").value.toString()
+                                    val nationality = user.child("Nationality").value.toString()
+                                    val sex = user.child("Sex").value.toString()
+
+                                    Database.user = User(name, ID, age, DoB, nationality, sex, clearance!!, vacc_date, vacc_loc)
+                                    Particulars.writeUserInfo(Database.user, requireContext())
+
+                                    val action = LogInDirections.loginAccepted()
+                                    mCallback.unlockDrawer()
+                                    findNavController().navigate(action)
+                                }
                         }
                     }
         }

@@ -23,6 +23,7 @@ class Settings : Fragment() {
         logout_card.setOnClickListener{
             Particulars.writeUserName(null, requireContext())
             Database.username = ""
+            Particulars.writeUserInfo(null, requireContext())
             val action = SettingsDirections.logout()
             (requireActivity() as LogIn.OnLogInListener).lockDrawer()
             findNavController().navigate(action)

@@ -36,7 +36,7 @@
             android:layout_height="wrap_content"
             android:text="Content"
             android:textAlignment="center"
-            android:paddingEnd="5dp"
+            android:padding="8dp"
             android:textAppearance="?attr/textAppearanceSubtitle1"
             />
 

@@ -2,6 +2,7 @@ package com.example.greenpass.data
 
 import android.location.Location
 import android.util.Log
+import com.example.greenpass.data.model.User
 import com.example.greenpass.utils.Clearance
 import com.example.greenpass.utils.Geofence
 import com.google.android.gms.maps.GoogleMap
@@ -29,6 +30,7 @@ class Database(
     companion object{
         var geofences: MutableList<Geofence>? = null
         lateinit var username: String
+        var user: User? = null
         fun fetchGeofences(mMap: GoogleMap, N: Int = -1) {
             if(N == -1){
                 Firebase.database.reference

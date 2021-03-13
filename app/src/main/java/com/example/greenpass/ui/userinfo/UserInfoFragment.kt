@@ -3,6 +3,7 @@ package com.example.greenpass.ui.userinfo
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.greenpass.R
@@ -47,27 +48,30 @@ class UserInfoFragment : Fragment(){
         user_vacc_date  = vacc_date.getChildAt(0) as TextView
 
 
-        //get user data from Firebase
-        Firebase.database.reference
-            .child("users")
-            .child(Database.username)
-            .get().addOnSuccessListener {user ->
-                user_name.text = user.child("name").value.toString()
-               user_clearance.text = Clearance.findByValue(user.child("clearance_level").value.toString().toInt()).toString()
-                user_vacc_date.text = user.child("vaccination_date").value.toString()
-                val age = user.child("age").value.toString().toInt()
-                val vacc_place = user.child("vaccination_place").value.toString()
+        //get user data from shared preference
+        Database.user?.let {
+            user_name.text = it.name
+            user_clearance.text = it.clearance.toString()
+            user_vacc_date.text = it.vacc_date
+            val age = it.age
+            val vacc_loc = it.vacc_loc
+            val DoB = it.DoB
+            val ID = it.ID
+            val nationality = it.nationality
+            val sex = it.sex
 
-                //set up on click listeners for descriptions on cards
-                name.setOnClickListener{
-                    InfoDialog(user_name.text.toString(), "Age: $age").show(childFragmentManager, InfoDialog.TAG)
-                }
-                clearance.setOnClickListener{
-                    InfoDialog("${user_clearance.text}", Clearance.getDesc("${user_clearance.text}")).show(childFragmentManager, InfoDialog.TAG)
-                }
-                vacc_date.setOnClickListener{
-                    InfoDialog("${user_vacc_date.text}", "Vaccinated at: $vacc_place").show(childFragmentManager, InfoDialog.TAG)
-                }
+            //set up on click listeners for descriptions on cards
+            name.setOnClickListener{
+                InfoDialog(user_name.text.toString(),
+                    "ID: $ID\nAge: $age\nDoB: $DoB\nNationality: $nationality \nSex: $sex"
+                ).show(childFragmentManager, InfoDialog.TAG)
             }
+            clearance.setOnClickListener{
+                InfoDialog("${user_clearance.text}", Clearance.getDesc("${user_clearance.text}")).show(childFragmentManager, InfoDialog.TAG)
+            }
+            vacc_date.setOnClickListener{
+                InfoDialog("${user_vacc_date.text}", "Vaccinated at: $vacc_loc").show(childFragmentManager, InfoDialog.TAG)
+            }
+        }
     }
 }
