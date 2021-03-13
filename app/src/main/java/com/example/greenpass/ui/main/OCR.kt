@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.SurfaceHolder
@@ -12,8 +13,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
 import com.google.android.gms.vision.CameraSource
+import com.google.android.gms.vision.Detector
+import com.google.android.gms.vision.text.TextBlock
 import com.google.android.gms.vision.text.TextRecognizer
 import kotlinx.android.synthetic.main.fragment_o_c_r.*
 
@@ -38,6 +42,9 @@ class OCR : Fragment() {
         if (!textRecognizer.isOperational) {
             Toast.makeText(requireContext(), "Dependencies are not loaded yet...please try after few moment!!", Toast.LENGTH_SHORT).show()
             return
+        }
+        else{
+            Log.d("debug", "Dependencies are loaded")
         }
         //  Init camera source to use high resolution and auto focus
         mCameraSource = CameraSource.Builder(requireContext(), textRecognizer)
@@ -65,6 +72,33 @@ class OCR : Fragment() {
                 }
             }
         })
+
+        setUpDetectorProcessor()
+    }
+
+    private fun setUpDetectorProcessor(){
+        textRecognizer.setProcessor(object : Detector.Processor<TextBlock> {
+            override fun release() {}
+
+            override fun receiveDetections(detections: Detector.Detections<TextBlock>) {
+                val items = detections.detectedItems
+
+                if (items.size() <= 0) {
+                    return
+                }
+
+                tv_result.post {
+                    val stringBuilder = StringBuilder()
+                    for (i in 0 until items.size()) {
+                        val item = items.valueAt(i)
+                        stringBuilder.append(item.value)
+                        stringBuilder.append("\n")
+                    }
+                    tv_result.text = stringBuilder.toString()
+                    Log.d("debug", stringBuilder.toString())
+                }
+            }
+        })
     }
 
     private fun isCameraPermissionGranted() : Boolean{
@@ -80,12 +114,14 @@ class OCR : Fragment() {
         when(requestCode){
             10 -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (ActivityCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) { return }
-                    mCameraSource.start(surface_camera_preview.holder)
                     Toast.makeText(requireContext(),
                         "Camera Permission Granted",
                         Toast.LENGTH_SHORT)
                         .show()
+
+                    val refresh = OCRDirections.refresh()
+                    findNavController().navigate(refresh)
+
                 } else {
                     Toast.makeText(requireContext(),
                         "Camera Permission Denied",

@@ -118,5 +118,10 @@
         <action
             android:id="@+id/gotoRegister"
             app:destination="@id/Register" />
+        <action
+            android:id="@+id/refresh"
+            app:destination="@id/OCR"
+            app:popUpTo="@+id/OCR"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>
