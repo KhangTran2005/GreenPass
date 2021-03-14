@@ -9,63 +9,66 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
-class Database(
-    val userId: String,
-) {
-    val userInfoDatabase = Firebase.database.reference.child("users").child(userId)
+object Database {
+    var geofences: MutableList<Geofence>? = null
+    lateinit var username: String
+    var user: User? = null
     fun writeLocation(loc: Location){
         val lat = loc.latitude
         val long = loc.longitude
         println("writing to database")
-        userInfoDatabase.child("latitude").setValue(lat).addOnSuccessListener {
+        Firebase.database.reference
+            .child("users")
+            .child(username)
+            .child("latitude")
+            .setValue(lat).addOnSuccessListener {
             println("Updated firebase")
         }.addOnFailureListener{
             println(it.printStackTrace())
         }
-        userInfoDatabase.child("longitude").setValue(long)
+        Firebase.database.reference
+            .child("users")
+            .child(username)
+            .child("longitude")
+            .setValue(long)
         Log.i("latitude update","Changed latitude to $lat")
         Log.i("longitude update","Changed longitude to $long")
     }
 
-    companion object{
-        var geofences: MutableList<Geofence>? = null
-        lateinit var username: String
-        var user: User? = null
-        fun fetchGeofences(mMap: GoogleMap, N: Int = -1) {
-            if(N == -1){
-                Firebase.database.reference
-                    .child("geofences")
-                    .child("N").get().addOnSuccessListener {
-                        fetchGeofences(mMap, it.value.toString().toInt())
-                    }
-            } else {
-                geofences = mutableListOf()
-                for (i in 0 until N) {
-                    Firebase.database.reference
-                            .child("geofences")
-                            .child(i.toString()).get().addOnSuccessListener {
-                                val name = it.child("name").value.toString()
-                                val lat = it.child("lat").value.toString().toDouble()
-                                val long = it.child("long").value.toString().toDouble()
-                                val radius = it.child("radius").value.toString().toDouble()
-                                val clearance = it.child("clearance").value.toString().toInt()
-                                geofences!!.add(Geofence.addGeofenceToMap(mMap,name,lat,long,radius,clearance))
-                            }
+    fun fetchGeofences(mMap: GoogleMap, N: Int = -1) {
+        if(N == -1){
+            Firebase.database.reference
+                .child("geofences")
+                .child("N").get().addOnSuccessListener {
+                    fetchGeofences(mMap, it.value.toString().toInt())
                 }
+        } else {
+            geofences = mutableListOf()
+            for (i in 0 until N) {
+                Firebase.database.reference
+                        .child("geofences")
+                        .child(i.toString()).get().addOnSuccessListener {
+                            val name = it.child("name").value.toString()
+                            val lat = it.child("lat").value.toString().toDouble()
+                            val long = it.child("long").value.toString().toDouble()
+                            val radius = it.child("radius").value.toString().toDouble()
+                            val clearance = it.child("clearance").value.toString().toInt()
+                            geofences!!.add(Geofence.addGeofenceToMap(mMap,name,lat,long,radius,clearance))
+                        }
             }
         }
-        fun addGeofencesToMap(mMap: GoogleMap,clearance: Clearance = Clearance.ANY){
-            if(geofences != null){
-                geofences!!
-                    .filter {
-                        clearance <= it.clearance
-                    }.forEach{
-                                Geofence.addGeofenceToMap(mMap,it.name,it.circle.center.latitude,
-                                        it.circle.center.longitude,it.circle.radius,it.clearance.ordinal)
-                    }
-            } else{
-                fetchGeofences(mMap)
-            }
+    }
+    fun addGeofencesToMap(mMap: GoogleMap,clearance: Clearance = Clearance.ANY){
+        if(geofences != null){
+            geofences!!
+                .filter {
+                    clearance <= it.clearance
+                }.forEach{
+                            Geofence.addGeofenceToMap(mMap,it.name,it.circle.center.latitude,
+                                    it.circle.center.longitude,it.circle.radius,it.clearance.ordinal)
+                }
+        } else{
+            fetchGeofences(mMap)
         }
     }
 }
