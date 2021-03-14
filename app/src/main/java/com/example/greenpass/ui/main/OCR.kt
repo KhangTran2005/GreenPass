@@ -211,8 +211,7 @@ class OCR : Fragment() {
                         requireContext(),
                         "Camera Permission Granted",
                         Toast.LENGTH_SHORT
-                    )
-                        .show()
+                    ).show()
 
                     val refresh = OCRDirections.refresh()
                     findNavController().navigate(refresh)

@@ -1,4 +1,4 @@
-package com.example.greenpass.ui.main
+package com.example.greenpass.ui.register
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
 import com.example.greenpass.data.Database
 import com.example.greenpass.data.model.User
+import com.example.greenpass.ui.main.RegisterDirections
 import kotlinx.android.synthetic.main.fragment_register.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -56,6 +57,8 @@ class Register : Fragment() {
         register_btn.setOnClickListener{
             user_new?.let {
                 Database.addNewUser(user_regis_input.text.toString(), password_regis_input.text.toString(), it)
+                val action = RegisterDirections.redirectToLogIn()
+                findNavController().navigate(action)
             }
         }
     }

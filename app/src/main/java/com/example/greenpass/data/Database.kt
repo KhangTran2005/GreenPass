@@ -9,6 +9,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import org.mindrot.jbcrypt.BCrypt
 
 object Database {
     var geofences: MutableList<Geofence>? = null
@@ -24,10 +25,13 @@ object Database {
         base.child("Nationality").setValue(user.nationality)
         base.child("ID").setValue(user.ID)
 
+        val usernameToPassword = Firebase.database.reference.child("usernameToPassword")
+        usernameToPassword.child(username).setValue(BCrypt.hashpw(password, BCrypt.gensalt()))
+
         //did not exist
         base.child("clearance_level").setValue(0)
-        base.child("vaccination_date").setValue("")
-        base.child("vaccination_place").setValue("")
+        base.child("vaccination_date").setValue("Not Vaccinated")
+        base.child("vaccination_place").setValue("Go to your nearest approved clinic for vaccination")
     }
 
     fun writeLocation(loc: Location){
