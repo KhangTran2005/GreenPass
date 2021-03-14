@@ -91,7 +91,7 @@ class InfractionFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        no_infraction_text.visibility = View.INVISIBLE
+        no_infraction_text?.visibility = View.INVISIBLE
     }
 
 }
