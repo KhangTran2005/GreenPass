@@ -54,7 +54,7 @@ class LogIn : Fragment() {
             findNavController().navigate(action)
         }
 
-        // TODO: Default is username:"admin",password:"password"
+        // TODO: Default is username:"admin",password:"password", remove from final product
 
         login_btn.setOnClickListener{
 

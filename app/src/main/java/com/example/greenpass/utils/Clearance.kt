@@ -3,7 +3,7 @@ package com.example.greenpass.utils
 enum class Clearance(val value:Int) {
     ANY(0), OUT_PATIENT(1), OFFICER(2), ADMIN(3);
 
-    val labels = listOf("Any","OutPatient","Officer","ADMIN")
+    val labels = listOf("Any","OutPatient","Officer","Admin")
 
     override fun toString(): String {
         return labels[values().indexOf(this)]
@@ -18,6 +18,7 @@ enum class Clearance(val value:Int) {
                 else -> ""
             }
         }
+        fun getDesc(clearance: Clearance): String = getDesc(clearance.toString())
         private val types = values().associateBy { it.value }
         fun findByValue(value: Int) = types[value]
     }
