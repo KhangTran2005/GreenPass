@@ -15,6 +15,21 @@ object Database {
     lateinit var username: String
     var user: User? = null
 
+    fun addNewUser(username: String, password: String, user: User){
+        val base = Firebase.database.reference.child("users").child(username)
+        base.child("name").setValue(user.name)
+        base.child("age").setValue(user.age)
+        base.child("DoB").setValue(user.DoB)
+        base.child("Sex").setValue(user.sex)
+        base.child("Nationality").setValue(user.nationality)
+        base.child("ID").setValue(user.ID)
+
+        //did not exist
+        base.child("clearance_level").setValue(0)
+        base.child("vaccination_date").setValue("")
+        base.child("vaccination_place").setValue("")
+    }
+
     fun writeLocation(loc: Location){
         val lat = loc.latitude
         val long = loc.longitude

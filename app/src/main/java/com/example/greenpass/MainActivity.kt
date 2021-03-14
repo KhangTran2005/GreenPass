@@ -21,16 +21,21 @@ import androidx.appcompat.widget.Toolbar
 import com.example.greenpass.data.Database
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections
+import com.example.greenpass.ui.userinfo.UserInfoFragment
 import com.example.greenpass.utils.LocationService
 import com.example.greenpass.utils.Particulars
 import com.google.firebase.FirebaseApp
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header_main.*
 
-class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
+class MainActivity : AppCompatActivity(), LogIn.OnLogInListener, UserInfoFragment.CallBack {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var drawerLayout: DrawerLayout
+    private lateinit var avatarView: ImageView
+    private lateinit var nameView: TextView
+    private lateinit var idView: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,20 +58,15 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
         //make so the display thing changes with navController
         navView.setupWithNavController(navController)
 
-        //get header views
-        val avatarView = (navView.getHeaderView(0) as LinearLayout).getChildAt(0) as ImageView
-        val nameView = (navView.getHeaderView(0) as LinearLayout).getChildAt(1) as TextView
-        val idView = (navView.getHeaderView(0) as LinearLayout).getChildAt(2) as TextView
+        avatarView = (nav_view.getHeaderView(0) as LinearLayout).getChildAt(0) as ImageView
+        nameView = (nav_view.getHeaderView(0) as LinearLayout).getChildAt(1) as TextView
+        idView = (nav_view.getHeaderView(0) as LinearLayout).getChildAt(2) as TextView
+
 
         //send to main screen if logged in
         if (Particulars.getUsername(baseContext) != null){
             Database.username = Particulars.getUsername(baseContext)!!
             Database.user = Particulars.getUser(baseContext)!!
-
-            Database.user?.let {
-                nameView.text = it.name
-                idView.text = it.ID
-            }
             Intent(this, LocationService::class.java).also{
                 startForegroundService(it)
             }
@@ -102,5 +102,10 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
 
     override fun lockDrawer() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+    }
+
+    override fun setNavView(name: String, id: String) {
+        nameView.text = name
+        idView.text = id
     }
 }

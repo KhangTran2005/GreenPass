@@ -8,7 +8,11 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
 import com.example.greenpass.data.Database
+import com.example.greenpass.data.model.User
+import com.example.greenpass.utils.Clearance
 import com.example.greenpass.utils.Particulars
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class Settings : Fragment() {
@@ -20,6 +24,14 @@ class Settings : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        debug_btn.setOnClickListener{
+            Firebase.database.reference
+                .child("users")
+                .child("user_new")
+                .setValue(User("name", "id", "age", "dob", "nationality", "sex"))
+        }
+
         logout_card.setOnClickListener{
             Particulars.writeUserName(null, requireContext())
             Database.username = ""

@@ -37,7 +37,7 @@ class LogIn : Fragment() {
             mCallback = activity as OnLogInListener
         }
         catch(e: ClassCastException){
-            throw java.lang.ClassCastException(activity.toString() + "must implement OnDialogDismissListener")
+            throw java.lang.ClassCastException(activity.toString() + "must implement OnLogInListener")
         }
     }
 

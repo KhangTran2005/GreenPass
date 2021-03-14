@@ -2,6 +2,7 @@ package com.example.greenpass.ui.main
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.media.ToneGenerator
 import android.os.Bundle
@@ -13,8 +14,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
+import com.example.greenpass.data.Database.user
 import com.example.greenpass.data.model.User
 import com.google.android.gms.vision.CameraSource
 import com.google.android.gms.vision.Detector
@@ -44,6 +47,13 @@ class OCR : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
+        val prefs = requireContext().getSharedPreferences("OCR", Context.MODE_PRIVATE)
+        with(prefs.edit()){
+            putBoolean("isDone", false)
+            apply()
+        }
+
         return inflater.inflate(R.layout.fragment_o_c_r, container, false)
     }
 
@@ -162,8 +172,17 @@ class OCR : Fragment() {
                             Log.d("debug", "Done Scanning!")
                             val age = (Calendar.getInstance().get(Calendar.YEAR) - (DoB?.substring(6, 10)?.toInt() ?: 0)).toString()
                             val user = User(name!!, id!!, age, DoB!!, nationality!!, sex!!)
-                            val action = OCRDirections.gotoRegister(Json.encodeToString(user))
-                            findNavController().navigate(action)
+                            val prefs = requireContext().getSharedPreferences("OCR", Context.MODE_PRIVATE)
+                            val isDone = prefs.getBoolean("isDone", true)
+                            if (!isDone){
+                                Toast.makeText(requireContext(), "Done Scanning!, Check your Particulars", Toast.LENGTH_SHORT).show()
+                                val action = OCRDirections.gotoRegister(Json.encodeToString(user))
+                                findNavController().navigate(action)
+                                with(prefs.edit()){
+                                    putBoolean("isDone", true)
+                                    apply()
+                                }
+                            }
                         }
                     }
                 }
