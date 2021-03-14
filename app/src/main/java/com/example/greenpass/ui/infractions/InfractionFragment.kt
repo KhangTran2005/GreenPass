@@ -18,6 +18,7 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_vaccine.*
 import kotlinx.android.synthetic.main.infraction_fragment.*
+import java.time.LocalDateTime
 
 class InfractionFragment : Fragment() {
 

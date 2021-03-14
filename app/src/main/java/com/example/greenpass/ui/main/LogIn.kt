@@ -1,6 +1,7 @@
 package com.example.greenpass.ui.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startForegroundService
 import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
 import com.example.greenpass.data.Database
 import com.example.greenpass.data.model.User
 import com.example.greenpass.utils.Clearance
+import com.example.greenpass.utils.LocationService
 import com.example.greenpass.utils.Particulars
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -54,7 +57,7 @@ class LogIn : Fragment() {
             findNavController().navigate(action)
         }
 
-        // TODO: Default is username:"admin",password:"password", remove this from final product
+        // TODO: Default is username:"admin",password:"password", remove this later
 
         login_btn.setOnClickListener{
 
@@ -90,6 +93,9 @@ class LogIn : Fragment() {
 
                                     val action = LogInDirections.loginAccepted()
                                     mCallback.unlockDrawer()
+                                    Intent(context, LocationService::class.java).also{
+                                        startForegroundService(requireContext(),it)
+                                    }
                                     findNavController().navigate(action)
                                 }
                         }

@@ -1,5 +1,7 @@
 package com.example.greenpass
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -19,7 +21,10 @@ import androidx.appcompat.widget.Toolbar
 import com.example.greenpass.data.Database
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections
+import com.example.greenpass.utils.LocationService
 import com.example.greenpass.utils.Particulars
+import com.google.firebase.FirebaseApp
+import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.nav_header_main.*
 
 class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
@@ -62,7 +67,9 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
                 nameView.text = it.name
                 idView.text = it.ID
             }
-
+            Intent(this, LocationService::class.java).also{
+                startForegroundService(it)
+            }
             val action = LogInDirections.loginAccepted()
             navController.navigate(action)
         } else{

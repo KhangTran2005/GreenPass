@@ -6,6 +6,7 @@ import com.example.greenpass.data.model.User
 import com.example.greenpass.utils.Clearance
 import com.example.greenpass.utils.Geofence
 import com.google.android.gms.maps.GoogleMap
+import com.google.firebase.FirebaseApp
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
@@ -13,6 +14,7 @@ object Database {
     var geofences: MutableList<Geofence>? = null
     lateinit var username: String
     var user: User? = null
+
     fun writeLocation(loc: Location){
         val lat = loc.latitude
         val long = loc.longitude
@@ -20,19 +22,21 @@ object Database {
         Firebase.database.reference
             .child("users")
             .child(username)
-            .child("latitude")
+            .child("loc")
+            .child("lat")
             .setValue(lat).addOnSuccessListener {
-            println("Updated firebase")
+            Log.i("LocationService","Updated firebase")
         }.addOnFailureListener{
-            println(it.printStackTrace())
+            it.printStackTrace()
         }
         Firebase.database.reference
             .child("users")
             .child(username)
-            .child("longitude")
+            .child("loc")
+            .child("long")
             .setValue(long)
-        Log.i("latitude update","Changed latitude to $lat")
-        Log.i("longitude update","Changed longitude to $long")
+        Log.i("LocationService","Changed latitude to $lat")
+        Log.i("LocationService","Changed longitude to $long")
     }
 
     fun fetchGeofences(mMap: GoogleMap, N: Int = -1) {
