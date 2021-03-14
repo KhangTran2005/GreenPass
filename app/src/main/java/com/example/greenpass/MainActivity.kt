@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_userinfo, R.id.nav_geofence, R.id.nav_covidinfo, R.id.nav_infractions
+                R.id.nav_userinfo, R.id.nav_covidinfo, R.id.nav_geofence, R.id.nav_infractions
             ), drawerLayout
         )
         //make the app bar change with navController
