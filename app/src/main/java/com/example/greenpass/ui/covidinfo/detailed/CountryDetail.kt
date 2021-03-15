@@ -9,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.greenpass.R
 import com.example.greenpass.data.model.Country
+import com.example.greenpass.utils.themeColor
 import com.example.infocovid.activities.CasesDialog
 import com.example.infocovid.activities.PieDialog
+import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.fragment_country_detail.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -20,12 +22,21 @@ class CountryDetail : Fragment() {
 
     private lateinit var country: Country
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.nav_host_fragment
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            scrimColor = Color.TRANSPARENT
+            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
 
         country = Json.decodeFromString(requireArguments().getString("countryString").toString())
-
         return inflater.inflate(R.layout.fragment_country_detail, container, false)
     }
 
