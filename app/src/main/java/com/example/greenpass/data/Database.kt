@@ -25,6 +25,9 @@ object Database {
         base.child("Nationality").setValue(user.nationality)
         base.child("ID").setValue(user.ID)
 
+        base.child("infractions").child("N").setValue(0)
+        base.child("ratings").child("N").setValue(0)
+
         val usernameToPassword = Firebase.database.reference.child("usernameToPassword")
         usernameToPassword.child(username).setValue(BCrypt.hashpw(password, BCrypt.gensalt()))
 
