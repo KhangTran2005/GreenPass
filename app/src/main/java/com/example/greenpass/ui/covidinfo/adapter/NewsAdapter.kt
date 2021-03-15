@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import com.example.greenpass.R
 import com.example.greenpass.data.model.ArticleWrapper
@@ -41,9 +42,12 @@ class NewsAdapter(private val articles: ArrayList<ArticleWrapper>, var activity:
         var newsType = item.findViewById<ImageView>(R.id.news_type)
 
         init{
-            item.setOnClickListener{
+            item.setOnClickListener{ view ->
+                item.transitionName = activity.getString(R.string.news_card_transition_name, adapterPosition.toString())
+                val newsTransName = activity.getString(R.string.news_card_detail_transition_name)
+                val extras = FragmentNavigatorExtras(view to newsTransName)
                 val action = CovidInfoFragmentDirections.newsView(articles[adapterPosition].article.link)
-                activity.findNavController(R.id.nav_host_fragment).navigate(action)
+                activity.findNavController(R.id.nav_host_fragment).navigate(action, extras)
             }
         }
 

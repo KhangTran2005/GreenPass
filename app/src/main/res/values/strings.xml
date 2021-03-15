@@ -23,4 +23,14 @@
     <string name="geofence">Geofence</string>
     <string name="green_pass">Green Pass</string>
     <string name="no_infractions_present">No infractions present</string>
+
+    <!-- Animations -->
+    <string name="country_card_transition_name">country_card_%1$s</string>
+    <string name="country_card_detail_transition_name">country_card_detail</string>
+
+    <string name="vaccine_card_transition_name">country_card_%1$s</string>
+    <string name="vaccine_card_detail_transition_name">country_card_detail</string>
+
+    <string name="news_card_transition_name">country_card_%1$s</string>
+    <string name="news_card_detail_transition_name">country_card_detail</string>
 </resources>

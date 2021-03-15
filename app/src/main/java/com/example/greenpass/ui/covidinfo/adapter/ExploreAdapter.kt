@@ -1,5 +1,6 @@
 package com.example.greenpass.ui.covidinfo.adapter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,20 +8,22 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
-import com.example.greenpass.MainActivity
 import com.example.greenpass.R
 import com.example.greenpass.data.model.Country
 import com.example.greenpass.ui.covidinfo.CovidInfoFragmentDirections
+import com.example.greenpass.ui.covidinfo.pages.ExploreFrag
+import com.google.android.material.transition.MaterialElevationScale
 import com.squareup.picasso.Picasso
-import kotlinx.android.synthetic.main.fragment_explore.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class ExploreAdapter(private val countries: ArrayList<Country>, var activity: FragmentActivity) : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
+class ExploreAdapter(private val countries: ArrayList<Country>, var activity: FragmentActivity, ) : RecyclerView.Adapter<ExploreAdapter.ViewHolder>() {
+
 
     inner class ViewHolder(item: View): RecyclerView.ViewHolder(item){
         var flag = item.findViewById<ImageView>(R.id.country_flag)
@@ -29,8 +32,11 @@ class ExploreAdapter(private val countries: ArrayList<Country>, var activity: Fr
 
         init{
             item.setOnClickListener{ view ->
+                item.transitionName = activity.getString(R.string.country_card_transition_name, adapterPosition.toString())
+                val countryTransName = activity.getString(R.string.country_card_detail_transition_name)
+                val extras = FragmentNavigatorExtras(view to countryTransName)
                 val action = CovidInfoFragmentDirections.countryDetail(Json.encodeToString(countries[adapterPosition]))
-                activity.findNavController(R.id.nav_host_fragment).navigate(action)
+                activity.findNavController(R.id.nav_host_fragment).navigate(action, extras)
             }
         }
 

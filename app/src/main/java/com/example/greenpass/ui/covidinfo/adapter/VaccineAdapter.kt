@@ -9,6 +9,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.FragmentNavigatorExtras
 import androidx.recyclerview.widget.RecyclerView
 import com.example.greenpass.R
 import com.example.greenpass.data.model.Vaccine
@@ -24,9 +25,12 @@ class VaccineAdapter(private var vaccines: ArrayList<Vaccine.Data>, var activity
         var sponsor = item.findViewById<TextView>(R.id.sponsor)
 
         init{
-            item.setOnClickListener{
+            item.setOnClickListener{ view ->
+                item.transitionName = activity.getString(R.string.vaccine_card_transition_name, adapterPosition.toString())
+                val vaccineTransName = activity.getString(R.string.vaccine_card_detail_transition_name)
+                val extras = FragmentNavigatorExtras(view to vaccineTransName)
                 val action = CovidInfoFragmentDirections.vaccineDetail(Json.encodeToString(vaccines[adapterPosition]))
-                activity.findNavController(R.id.nav_host_fragment).navigate(action)
+                activity.findNavController(R.id.nav_host_fragment).navigate(action, extras)
             }
         }
 

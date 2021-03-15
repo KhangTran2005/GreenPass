@@ -76,7 +76,12 @@
             app:popExitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/register"
-            app:destination="@id/Register" />
+            app:destination="@id/Register"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
     </fragment>
     <fragment
         android:id="@+id/settings"
@@ -85,6 +90,10 @@
         tools:layout="@layout/fragment_settings" >
         <action
             android:id="@+id/logout"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             app:destination="@id/nav_login" />
     </fragment>
     <fragment
@@ -106,13 +115,22 @@
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/gotoScan"
-            app:destination="@id/OCR" />
+            app:destination="@id/OCR"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            />
         <action
             android:id="@+id/redirectToLogIn"
             app:destination="@id/nav_login"
             app:popUpTo="@+id/nav_login"
             app:popUpToInclusive="true"
             app:launchSingleTop="true"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left"
             />
     </fragment>
     <fragment
@@ -123,7 +141,11 @@
             android:id="@+id/gotoRegister"
             app:destination="@id/Register"
             app:popUpTo="@+id/Register"
-            app:popUpToInclusive="true">
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left">
             <argument
                 android:name="user_new"
                 android:defaultValue="null"

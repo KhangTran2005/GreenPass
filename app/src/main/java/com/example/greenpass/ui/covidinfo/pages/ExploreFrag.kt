@@ -5,17 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.greenpass.R
 import com.example.greenpass.data.model.Country
+import com.example.greenpass.ui.covidinfo.CovidInfoFragment
 import com.example.greenpass.ui.covidinfo.adapter.ExploreAdapter
 import com.example.greenpass.ui.covidinfo.viewmodel.ExploreViewModel
+import com.google.android.material.transition.MaterialElevationScale
 import kotlinx.android.synthetic.main.fragment_explore.*
 
 
-class ExploreFrag : Fragment() {
+class ExploreFrag : Fragment(){
     private val viewModel: ExploreViewModel by lazy {
         ViewModelProvider(this).get(ExploreViewModel::class.java)
     }

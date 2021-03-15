@@ -1,5 +1,6 @@
 package com.example.greenpass.ui.covidinfo.detailed
 
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Html
 import androidx.fragment.app.Fragment
@@ -9,6 +10,8 @@ import android.view.ViewGroup
 import com.example.greenpass.R
 import com.example.greenpass.data.model.Vaccine
 import com.example.greenpass.ui.covidinfo.CovidInfoFragmentDirections
+import com.example.greenpass.utils.themeColor
+import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.fragment_vaccine_detail.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -17,6 +20,16 @@ import java.lang.StringBuilder
 class VaccineDetail : Fragment() {
 
     private lateinit var vaccineData: Vaccine.Data
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        sharedElementEnterTransition = MaterialContainerTransform().apply {
+            drawingViewId = R.id.nav_host_fragment
+            duration = resources.getInteger(R.integer.reply_motion_duration_large).toLong()
+            scrimColor = Color.TRANSPARENT
+            setAllContainerColors(requireContext().themeColor(R.attr.colorSurface))
+        }
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
