@@ -18,6 +18,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.navOptions
 import com.example.greenpass.data.Database
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections
@@ -86,7 +87,17 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener, UserInfoFragmen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         when(item.itemId){
-            R.id.action_settings -> navController.navigate(R.id.settings)
+            R.id.action_settings -> {
+                val options = navOptions {
+                    anim {
+                        enter = R.anim.slide_in_right
+                        exit = R.anim.slide_out_left
+                        popEnter = R.anim.slide_in_left
+                        popExit = R.anim.slide_out_right
+                    }
+                }
+                navController.navigate(R.id.settings, null, options)
+            }
         }
         return false
     }

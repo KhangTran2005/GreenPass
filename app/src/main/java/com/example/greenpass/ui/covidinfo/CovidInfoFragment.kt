@@ -1,9 +1,7 @@
 package com.example.greenpass.ui.covidinfo
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.Fragment
 import com.example.greenpass.R
@@ -32,7 +30,13 @@ class CovidInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val root = inflater.inflate(R.layout.fragment_covidinfo, container, false)
+        setHasOptionsMenu(true)
         return root
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(R.id.action_settings).isVisible = true
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
