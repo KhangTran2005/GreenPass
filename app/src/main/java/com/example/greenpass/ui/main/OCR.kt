@@ -172,16 +172,20 @@ class OCR : Fragment() {
                             Log.d("debug", "Done Scanning!")
                             val age = (Calendar.getInstance().get(Calendar.YEAR) - (DoB?.substring(6, 10)?.toInt() ?: 0)).toString()
                             val user = User(name!!, id!!, age, DoB!!, nationality!!, sex!!)
-                            val prefs = requireContext().getSharedPreferences("OCR", Context.MODE_PRIVATE)
-                            val isDone = prefs.getBoolean("isDone", true)
-                            if (!isDone){
-                                Toast.makeText(requireContext(), "Done Scanning!, Check your Particulars", Toast.LENGTH_SHORT).show()
-                                val action = OCRDirections.gotoRegister(Json.encodeToString(user))
-                                findNavController().navigate(action)
-                                with(prefs.edit()){
-                                    putBoolean("isDone", true)
-                                    apply()
+                            try{
+                                val prefs = requireContext().getSharedPreferences("OCR", Context.MODE_PRIVATE)
+                                val isDone = prefs.getBoolean("isDone", true)
+                                if (!isDone){
+                                    Toast.makeText(requireContext(), "Done Scanning!, Check your Particulars", Toast.LENGTH_SHORT).show()
+                                    val action = OCRDirections.gotoRegister(Json.encodeToString(user))
+                                    findNavController().navigate(action)
+                                    with(prefs.edit()){
+                                        putBoolean("isDone", true)
+                                        apply()
+                                    }
                                 }
+                            }
+                            catch(ignored: Exception){
                             }
                         }
                     }
