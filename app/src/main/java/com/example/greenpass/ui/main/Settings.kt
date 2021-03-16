@@ -1,5 +1,6 @@
 package com.example.greenpass.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +17,19 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.android.synthetic.main.fragment_settings.*
 
 class Settings : Fragment() {
+
+    private lateinit var mCallback: LogIn.OnLogInListener
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try{
+            mCallback = activity as LogIn.OnLogInListener
+        }
+        catch(e: ClassCastException){
+            throw java.lang.ClassCastException(activity.toString() + "must implement OnLogInListener")
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -36,6 +50,7 @@ class Settings : Fragment() {
             Particulars.writeUserName(null, requireContext())
             Database.username = ""
             Particulars.writeUserInfo(null, requireContext())
+            mCallback.disableAdmin()
             val action = SettingsDirections.logout()
             (requireActivity() as LogIn.OnLogInListener).lockDrawer()
             findNavController().navigate(action)

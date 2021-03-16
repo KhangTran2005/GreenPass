@@ -29,6 +29,10 @@ class LogIn : Fragment() {
         fun unlockDrawer()
 
         fun lockDrawer()
+
+        fun enableAdmin()
+
+        fun disableAdmin()
     }
 
     override fun onAttach(context: Context) {
@@ -93,6 +97,9 @@ class LogIn : Fragment() {
 
                                     val action = LogInDirections.loginAccepted()
                                     mCallback.unlockDrawer()
+                                    if (clearance == Clearance.ADMIN){
+                                        mCallback.enableAdmin()
+                                    }
                                     Intent(context, LocationService::class.java).also{
                                         startForegroundService(requireContext(),it)
                                     }

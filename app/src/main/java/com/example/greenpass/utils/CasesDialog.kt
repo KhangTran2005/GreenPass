@@ -1,4 +1,4 @@
-package com.example.infocovid.activities
+package com.example.greenpass.utils
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable

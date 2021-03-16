@@ -31,10 +31,27 @@ object Database {
         val usernameToPassword = Firebase.database.reference.child("usernameToPassword")
         usernameToPassword.child(username).setValue(BCrypt.hashpw(password, BCrypt.gensalt()))
 
+        Firebase.database.reference
+            .child("nameToUsername")
+            .child(user.name).setValue(username)
+
         //did not exist
         base.child("clearance_level").setValue(0)
         base.child("vaccination_date").setValue("Not Vaccinated")
         base.child("vaccination_place").setValue("Go to your nearest approved clinic for vaccination")
+    }
+
+    fun updateUser(){
+        Firebase.database.reference.child("users").child(username).get()
+            .addOnSuccessListener { snapshot ->
+                user?.let { user ->
+                    user.vacc_date = snapshot.child("vaccination_date").value.toString()
+                    user.vacc_loc = snapshot.child("vaccination_place").value.toString()
+                    Clearance.findByValue(snapshot.child("clearance_level").value.toString().toInt())?.let{
+                        user.clearance = it
+                    }
+                }
+            }
     }
 
     fun writeLocation(loc: Location){
