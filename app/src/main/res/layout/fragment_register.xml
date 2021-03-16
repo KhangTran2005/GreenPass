@@ -229,6 +229,13 @@
 
             </LinearLayout>
 
+            <ImageView
+                android:id="@+id/expandDialog"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_baseline_keyboard_arrow_down_24"
+                />
+
             <Button
                 android:id="@+id/scan_btn"
                 android:layout_width="wrap_content"
