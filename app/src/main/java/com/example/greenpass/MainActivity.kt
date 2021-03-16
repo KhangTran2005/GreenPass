@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener, UserInfoFragmen
 
 
         //send to main screen if logged in
-        if (Particulars.getUsername(baseContext) != null){
+        if (Particulars.getUsername(baseContext) != null && Particulars.getUser(baseContext) != null){
             Database.username = Particulars.getUsername(baseContext)!!
             Database.user = Particulars.getUser(baseContext)!!
             Intent(this, LocationService::class.java).also{
