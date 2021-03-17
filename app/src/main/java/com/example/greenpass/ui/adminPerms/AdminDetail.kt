@@ -91,15 +91,22 @@ class AdminDetail : Fragment() {
                 cop_switch.setOnCheckedChangeListener{buttonView, isChecked ->
                     if (isChecked){
                         base.child("clearance_level").setValue(2)
+                        admin_switch.isChecked = false
                     }
                     else {
-                        base.child("clearance_level").setValue(0)
+                        if (user.vacc_date != "Not Vaccinated"){
+                            base.child("clearance_level").setValue(1)
+                        }
+                        else{
+                            base.child("clearance_level").setValue(0)
+                        }
                     }
                 }
 
                 admin_switch.setOnCheckedChangeListener{buttonView, isChecked ->
                     if (isChecked){
                         base.child("clearance_level").setValue(3)
+                        cop_switch.isChecked = false
                     }
                     else {
                         if (user.vacc_date != "Not Vaccinated"){
