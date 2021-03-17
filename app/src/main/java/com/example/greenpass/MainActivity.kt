@@ -102,10 +102,17 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener, UserInfoFragmen
                 Particulars.writeUserName(null, this)
                 Database.username = ""
                 Particulars.writeUserInfo(null, this)
-//                mCallback.disableAdmin()
-                val action = SettingsDirections.logout()
+                disableAdmin()
                 (this as LogIn.OnLogInListener).lockDrawer()
-                finishAffinity()
+                val options = navOptions {
+                    anim {
+                        enter = R.anim.slide_in_right
+                        exit = R.anim.slide_out_left
+                        popEnter = R.anim.slide_in_left
+                        popExit = R.anim.slide_out_right
+                    }
+                }
+                navController.navigate(R.id.nav_login, null, options)
             }
         }
         return false
