@@ -165,7 +165,11 @@
         tools:layout="@layout/fragment_admin" >
         <action
             android:id="@+id/toDetail"
-            app:destination="@id/adminDetail">
+            app:destination="@id/adminDetail"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right">
 
             <argument
                 android:name="user"
@@ -179,5 +183,15 @@
         android:id="@+id/adminDetail"
         android:name="com.example.greenpass.ui.adminPerms.AdminDetail"
         android:label="Admin Detail"
-        tools:layout="@layout/fragment_admin_detail" />
+        tools:layout="@layout/fragment_admin_detail" >
+        <action
+            android:id="@+id/action_adminDetail_self"
+            app:destination="@id/adminDetail">
+            <argument
+                android:name="user"
+                android:defaultValue="null"
+                app:argType="string"
+                />
+        </action>
+    </fragment>
 </navigation>

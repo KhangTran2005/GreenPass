@@ -11,14 +11,21 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
+import androidx.navigation.fragment.findNavController
 import com.example.greenpass.R
 import com.example.greenpass.data.Database
 import com.example.greenpass.data.model.User
+import com.example.greenpass.ui.adminPerms.AdminDetail
+import com.example.greenpass.ui.adminPerms.AdminDetailDirections
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import kotlinx.android.synthetic.main.fragment_admin_detail.*
 import kotlinx.android.synthetic.main.fragment_admin_dialog.*
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.lang.ClassCastException
 
-class AdminDialog(var user: User) : DialogFragment() {
+class AdminDialog(var user: User, var fragment: AdminDetail) : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (getDialog() != null && getDialog()?.getWindow() != null) {
@@ -56,6 +63,7 @@ class AdminDialog(var user: User) : DialogFragment() {
                     }
                 }
             Toast.makeText(requireContext(), "Info Submitted", Toast.LENGTH_SHORT).show()
+            fragment.updateVaccs(vacc_date, vacc_place)
             dismiss()
         }
     }
