@@ -64,8 +64,8 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener, UserInfoFragmen
         //make so the display thing changes with navController
         navView.setupWithNavController(navController)
 
-        nameView = (nav_view.getHeaderView(0) as LinearLayout).getChildAt(1) as TextView
-        idView = (nav_view.getHeaderView(0) as LinearLayout).getChildAt(2) as TextView
+        nameView = (nav_view.getHeaderView(0) as LinearLayout).getChildAt(0) as TextView
+        idView = (nav_view.getHeaderView(0) as LinearLayout).getChildAt(1) as TextView
 
 
         //send to main screen if logged in
