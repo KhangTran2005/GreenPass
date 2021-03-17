@@ -130,7 +130,7 @@ class OCR : Fragment() {
                         while (scanner.hasNext()) {
                             var line = scanner.nextLine()
                             when {
-                                line.matches("FIN .*".toRegex()) || line.matches("IDENTITY CARD NO. .*".toRegex()) -> {
+                                line.matches("FIN .*".toRegex()) || line.matches("NRIC No\\. .*".toRegex()) -> {
                                     Log.d("debug", "ID: ${line.substring(4, 13)}")
                                     id = line.substring(4, 13)
                                 }

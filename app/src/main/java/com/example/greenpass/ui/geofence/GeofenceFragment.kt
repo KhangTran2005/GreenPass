@@ -240,7 +240,7 @@ class GeofenceFragment : Fragment(), GoogleMap.OnMarkerClickListener , GoogleMap
                         val sum = (placeRating.child("sum")
                                 .value as Number).toDouble()
                         val ave = if (N == 0) 0.0 else sum / N
-                        ave_rating_field.text = "$ave"
+                        ave_rating_field.text = "%.2f".format(ave)
                         rating_no_field.text = "$N"
                     }
                 }

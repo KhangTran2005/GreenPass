@@ -50,7 +50,7 @@ class Admin : Fragment() {
             .setQuery(baseRef){
                 val name = it.child("name").value.toString()
                 val clearance = Clearance.findByValue(
-                    it.child("clearance_level").value.toString().toInt()
+                    it.child("clearance_level").value.toString().toIntOrNull() ?: 0
                 )
                 val vacc_date = it.child("vaccination_date").value.toString()
                 val age = it.child("age").value.toString()
