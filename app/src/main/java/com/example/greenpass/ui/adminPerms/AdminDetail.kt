@@ -66,7 +66,7 @@ class AdminDetail : Fragment() {
         }
         else if (user.clearance == Clearance.OFFICER){
             cop_switch.isChecked = true
-            cop_switch.isChecked = false
+            admin_switch.isChecked = false
         }
 
         if (user.vacc_date == "Not Vaccinated"){
