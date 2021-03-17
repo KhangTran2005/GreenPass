@@ -124,8 +124,8 @@ class LocationService : Service() {
 
     private fun requestLocationUpdates() {
         val request = LocationRequest()
-        request.interval = 4 * 60 * 1000
-        request.fastestInterval = 4 * 60 * 1000
+        request.interval = 2 * 60 * 1000
+        request.fastestInterval = 2 * 60 * 1000
         request.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
         val client = LocationServices.getFusedLocationProviderClient(this)
         val permission = ContextCompat.checkSelfPermission(
