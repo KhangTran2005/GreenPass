@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
@@ -18,11 +19,13 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.navigation.navOptions
 import com.example.greenpass.data.Database
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections
 import com.example.greenpass.ui.userinfo.UserInfoFragment
+import com.example.greenpass.utils.Clearance
 import com.example.greenpass.utils.LocationService
 import com.example.greenpass.utils.Particulars
 import com.google.firebase.FirebaseApp
@@ -37,6 +40,8 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener, UserInfoFragmen
     private lateinit var avatarView: ImageView
     private lateinit var nameView: TextView
     private lateinit var idView: TextView
+
+    private val adminID = 12031
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,6 +75,11 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener, UserInfoFragmen
             Database.user = Particulars.getUser(baseContext)!!
             Intent(this, LocationService::class.java).also{
                 startForegroundService(it)
+            }
+            Database.user?.let{
+                if (it.clearance == Clearance.ADMIN){
+                    enableAdmin()
+                }
             }
             val action = LogInDirections.loginAccepted()
             navController.navigate(action)
@@ -118,5 +128,50 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener, UserInfoFragmen
     override fun setNavView(name: String, id: String) {
         nameView.text = name
         idView.text = id
+    }
+
+    override fun enableAdmin(){
+        val navController = findNavController(R.id.nav_host_fragment)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val mMenu = navView.menu
+        val menuSize = mMenu.size()
+        // groupId, itemId, order, title
+        mMenu.add(1, adminID, menuSize, "Users")
+        // parameter of getItem is
+        mMenu.getItem(menuSize).setIcon(R.drawable.ic_baseline_architecture_24)
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_userinfo, R.id.nav_covidinfo, R.id.nav_geofence, R.id.nav_infractions, R.id.nav_admin
+            ), drawerLayout
+        )
+        //make the app bar change with navController
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        mMenu.getItem(menuSize).setOnMenuItemClickListener {
+            //do something
+            drawerLayout.closeDrawer(GravityCompat.START)
+            navController.navigate(R.id.nav_admin)
+
+            // false : function of super will be run
+            // true : this will substitude the super function.
+            false
+        }
+    }
+
+    override fun disableAdmin(){
+        val navController = findNavController(R.id.nav_host_fragment)
+        val navView: NavigationView = findViewById(R.id.nav_view)
+        val mMenu = navView.menu
+
+        mMenu.removeItem(adminID)
+
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_userinfo, R.id.nav_covidinfo, R.id.nav_geofence, R.id.nav_infractions
+            ), drawerLayout
+        )
+        //make the app bar change with navController
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 }

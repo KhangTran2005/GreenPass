@@ -94,11 +94,13 @@ class Register : Fragment() {
 
         register_btn.setOnClickListener{
             if (fieldsNotNull()){
-                user_new = User(name_input.text.toString(), nric_input.text.toString(), age_input.toString(), DoB_input.text.toString(), nationality_input.text.toString(), sex_input.text.toString())
+                user_new = User(name_input.text.toString(), nric_input.text.toString(), age_input.text.toString(), DoB_input.text.toString(), nationality_input.text.toString(), sex_input.text.toString())
             }
             if (!(TextUtils.isEmpty(user_regis_input.text) || TextUtils.isEmpty(password_regis_input.text)))
             user_new?.let {
                 Database.addNewUser(user_regis_input.text.toString(), password_regis_input.text.toString(), it)
+                regiViewModel.setPassword("")
+                regiViewModel.setUserName("")
                 val action = RegisterDirections.redirectToLogIn()
                 findNavController().navigate(action)
             }

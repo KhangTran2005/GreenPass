@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="3dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date: "
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:textStyle="bold"
+                />
+            <EditText
+                android:id="@+id/vaccination_date_et"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="11-Sept-2011"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Place: "
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:textStyle="bold"
+                />
+            <EditText
+                android:id="@+id/vaccination_place_et"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint="The Hospital"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/confirmThing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"
+            android:layout_gravity="center_horizontal"
+            />
+
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

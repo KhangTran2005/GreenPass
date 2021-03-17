@@ -33,4 +33,7 @@
 
     <string name="news_card_transition_name">country_card_%1$s</string>
     <string name="news_card_detail_transition_name">country_card_detail</string>
+
+    <string name="admin_card_transition_name">country_card_%1$s</string>
+    <string name="admin_card_detail_transition_name">country_card_detail</string>
 </resources>

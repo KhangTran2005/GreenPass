@@ -9,9 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.greenpass.R
 import com.example.greenpass.data.model.Country
+import com.example.greenpass.utils.CasesDialog
+import com.example.greenpass.utils.PieDialog
 import com.example.greenpass.utils.themeColor
-import com.example.infocovid.activities.CasesDialog
-import com.example.infocovid.activities.PieDialog
 import com.google.android.material.transition.MaterialContainerTransform
 import kotlinx.android.synthetic.main.fragment_country_detail.*
 import kotlinx.serialization.decodeFromString
