@@ -39,7 +39,7 @@ class InfractionFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        menu.findItem(R.id.action_settings).isVisible = true
+        menu.findItem(R.id.action_sign_out).isVisible = true
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

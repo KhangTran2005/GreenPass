@@ -20,10 +20,12 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.example.greenpass.data.Database
 import com.example.greenpass.ui.main.LogIn
 import com.example.greenpass.ui.main.LogInDirections
+import com.example.greenpass.ui.main.SettingsDirections
 import com.example.greenpass.ui.userinfo.UserInfoFragment
 import com.example.greenpass.utils.Clearance
 import com.example.greenpass.utils.LocationService
@@ -96,16 +98,14 @@ class MainActivity : AppCompatActivity(), LogIn.OnLogInListener, UserInfoFragmen
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         when(item.itemId){
-            R.id.action_settings -> {
-                val options = navOptions {
-                    anim {
-                        enter = R.anim.slide_in_right
-                        exit = R.anim.slide_out_left
-                        popEnter = R.anim.slide_in_left
-                        popExit = R.anim.slide_out_right
-                    }
-                }
-                navController.navigate(R.id.settings, null, options)
+            R.id.action_sign_out -> {
+                Particulars.writeUserName(null, this)
+                Database.username = ""
+                Particulars.writeUserInfo(null, this)
+//                mCallback.disableAdmin()
+                val action = SettingsDirections.logout()
+                (this as LogIn.OnLogInListener).lockDrawer()
+                finishAffinity()
             }
         }
         return false
