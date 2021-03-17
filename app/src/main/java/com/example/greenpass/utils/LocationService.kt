@@ -104,7 +104,7 @@ class LocationService : Service() {
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
         Log.i(TAG,"Service task removed")
-        Toast.makeText(this,"Service killed",Toast.LENGTH_LONG).show()
+        Toast.makeText(this,"Green Pass service killed",Toast.LENGTH_LONG).show()
         stopForeground(true)
         notifManager.cancel(1023456789)
         stopSelf()
@@ -113,7 +113,7 @@ class LocationService : Service() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onDestroy() {
         Log.i(TAG,"Service Killed")
-        Toast.makeText(this,"Service killed",Toast.LENGTH_LONG).show()
+        Toast.makeText(this,"Green Pass service killed",Toast.LENGTH_LONG).show()
         stopForeground(true)
         notifManager.cancel(1023456789)
         stopSelf()
